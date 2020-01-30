@@ -2,7 +2,7 @@
 
 ## Objective
 
-Develop a photo sharing mobile application where users can post pictures, follow other users and comment on posts. Two additional features (TBD) will be added to the app.
+Develop a photo sharing mobile application where users can post pictures, follow other users and comment on posts. Two additional features (Bookmarking and direct from camera posting) will be added to the app.
 
 ## Project
 
