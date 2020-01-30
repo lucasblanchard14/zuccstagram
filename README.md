@@ -12,7 +12,7 @@ Creation of a mobile application similar to Instagram where users can create an 
 
 * Lucas Blanchard (LucasBlanchard14)
 * Ian Guimaraes (iggcomp)
-* Kizito Kabanza ()
+* Kizito Kabanza (kizito-dev)
 * Justin Loh (JustinLohKingWei)
 * Sean Mckenzie (mckenzietsean)
 
