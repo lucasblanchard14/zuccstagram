@@ -2,7 +2,7 @@
 
 ## Objective
 
-Develop a photo sharing mobile application where users can post pictures, follow other users and comment on posts. Two additional features (TBD) will be added to the app.
+Develop a photo sharing mobile application where users can post pictures, follow other users and comment on posts. Additonally, users will be able to directly post a picture using their phone's camera and bookmark posts they like or wish to save for viewing later.
 
 ## Project
 
@@ -17,4 +17,6 @@ Creation of a mobile application similar to Instagram where users can create an 
 * Sean Mckenzie (mckenzietsean)
 
 ## Technologies
-* TBD
+* Firebase Database
+* Android Studio (Android API)
+* Java
