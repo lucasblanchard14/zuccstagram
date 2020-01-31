@@ -2,7 +2,7 @@
 
 ## Objective
 
-Develop a photo sharing mobile application where users can post pictures, follow other users and comment on posts. Additonally, users will be able to directly post a picture using their phone's camera and bookmark posts they like or wish to save for viewing later.
+Develop a photo sharing mobile application where users can post pictures, follow other users and comment on posts. Two additional features (Bookmarking and direct from camera posting) will be added to the app.
 
 ## Project
 
