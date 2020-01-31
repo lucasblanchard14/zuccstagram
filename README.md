@@ -17,4 +17,6 @@ Creation of a mobile application similar to Instagram where users can create an 
 * Sean Mckenzie (mckenzietsean)
 
 ## Technologies
-* TBD
+* Firebase Database
+* Android Studio (Android API)
+* Java
