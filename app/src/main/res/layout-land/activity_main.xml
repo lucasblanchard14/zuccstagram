@@ -16,8 +16,8 @@
         android:id="@+id/logInButton"
         android:layout_width="191dp"
         android:layout_height="40dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="444dp"
+        android:layout_marginStart="268dp"
+        android:layout_marginTop="244dp"
         android:text="@string/logInButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="5dp"
         android:text="@string/signUpButton"
         app:layout_constraintStart_toStartOf="@+id/logInButton"
         app:layout_constraintTop_toBottomOf="@+id/logInButton" />
@@ -53,15 +53,15 @@
         android:hint="@string/editText_hint_Password"
         android:inputType="textPassword"
         android:text="@string/editText_Password"
-        app:layout_constraintStart_toStartOf="@+id/textView_Email"
+        app:layout_constraintStart_toStartOf="@+id/textView_Password"
         app:layout_constraintTop_toBottomOf="@+id/textView_Password" />
 
     <TextView
         android:id="@+id/textView_Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="252dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="136dp"
         android:text="@string/textView_Email"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -70,31 +70,21 @@
         android:id="@+id/textView_Password"
         android:layout_width="74dp"
         android:layout_height="26dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="292dp"
         android:text="@string/textView_Password"
         app:layout_constraintStart_toStartOf="@+id/textView_Email"
-        app:layout_constraintTop_toBottomOf="@+id/editText_Email" />
+        app:layout_constraintTop_toTopOf="@+id/textView_Email" />
 
     <TextView
         android:id="@+id/textView_title_Zuccstagram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="256dp"
+        android:layout_marginTop="40dp"
         android:text="@string/textView_title_Zuccstagram"
         android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <ImageView
-        android:id="@+id/zuccstagram_Logo"
-        android:layout_width="139dp"
-        android:layout_height="111dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@+id/textView_title_Zuccstagram"
-        app:layout_constraintTop_toBottomOf="@+id/textView_title_Zuccstagram"
-        app:srcCompat="@mipmap/ic_launcher_round" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

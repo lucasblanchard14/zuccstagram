@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".signUp_P3">
+
+
+
+
+    <include
+
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+
+
+    <ImageView
+        android:id="@+id/zuccstagram_Logo"
+        android:layout_width="132dp"
+        android:layout_height="121dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/textView_SecurityQuestion_P3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="200dp"
+        android:text="@string/textView_SecurityQuestion_P3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <EditText
+        android:id="@+id/editText_SecurityQuestion_P3"
+        android:layout_width="326dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="@string/editText_hint_SecurityQuestion_P3"
+        android:inputType="textPersonName"
+        android:text="@string/editText_SecurityQuestion_P3"
+        app:layout_constraintStart_toStartOf="@+id/textView_SecurityQuestion_P3"
+        app:layout_constraintTop_toBottomOf="@+id/textView_SecurityQuestion_P3" />
+
+    <TextView
+        android:id="@+id/textView_SecurityQuestionAnswer_P3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/textView_SecurityQuestion_Answer_P3"
+        app:layout_constraintStart_toStartOf="@+id/textView_SecurityQuestion_P3"
+        app:layout_constraintTop_toBottomOf="@+id/editText_SecurityQuestion_P3" />
+
+    <EditText
+        android:id="@+id/editText_SecurityQuestionAnswer_P3"
+        android:layout_width="326dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/editText_SecurityQuestion_Answer_P3"
+        app:layout_constraintStart_toStartOf="@+id/textView_SecurityQuestion_P3"
+        app:layout_constraintTop_toBottomOf="@+id/textView_SecurityQuestionAnswer_P3" />
+
+    <Button
+        android:id="@+id/nextButton_P3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="500dp"
+        android:text="@string/nextButton_P3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

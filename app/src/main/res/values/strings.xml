@@ -1,3 +1,89 @@
 <resources>
+
+    //Start Up Page
+
+
     <string name="app_name">Zuccstagram_SignUp</string>
+    <string name="sharedPreferences_Profile">sharedPreferences_Profile</string>
+
+    <string name="logInButton">Log In</string>
+    <string name="signUpButton">Sign Up</string>
+
+    <string name="textView_Email">Email :</string>
+    <string name="editText_hint_Email">Zuccstagram@gmail.com</string>
+    <string name="editText_Email"></string>
+
+    <string name="textView_Password">Password :</string>
+    <string name="editText_hint_Password">*********</string>
+    <string name="editText_Password"></string>
+
+    <string name="textView_title_Zuccstagram">Zuccstagram</string>
+
+
+    //Sign Up Page P1
+
+    <string name="nextButton_P1">Next</string>
+
+    <string name="textView_FirstName_P1">First Name :</string>
+    <string name="editText_hint_FirstName_P1">Steve</string>
+    <string name="editText_FirstName_P1"></string>
+
+    <string name="textView_LastName_P1">Last Name :</string>
+    <string name="editText_hint_LastName_P1">Smith</string>
+    <string name="editText_LastName_P1"></string>
+
+    <string name="textView_Email_P1">Email :</string>
+    <string name="editText_hint_Email_P1">Zuccstagram@gmail.com</string>
+    <string name="editText_Email_P1"></string>
+
+    <string name="textView_Email_Confirmation_P1">Confirm email :</string>
+    <string name="editText_hint_Email_Confirmation_P1">Zuccstagram@gmail.com</string>
+    <string name="editText_Email_Confirmation_P1"></string>
+
+
+    //Sign Up Page P2
+
+    <string name="nextButton_P2">Next</string>
+
+    <string name="textView_UserName_P2">Username :</string>
+    <string name="editText_hint_UserName_P2">Zuccstaaa_11</string>
+    <string name="editText_UserName_P2"></string>
+
+    <string name="textView_Bio_P2">Bio :</string>
+    <string name="editText_hint_Bio_P2">One for All \nAnd all For Zuccst</string>
+    <string name="editText_Bio_P2"></string>
+
+    <string name="textView_Password_P2">Password :</string>
+    <string name="editText_hint_Password_P2">****</string>
+    <string name="editText_Password_P2"></string>
+
+    <string name="textView_Password_Confirmation_P2">Confirm Password :</string>
+    <string name="editText_hint_Password_Confirmation_P2">****</string>
+    <string name="editText_Password_Confirmation_P2"></string>
+
+
+    //Sign Up Page P3
+
+    <string name="nextButton_P3">Next</string>
+
+    <string name="textView_SecurityQuestion_P3">Security Question :</string>
+    <string name="editText_hint_SecurityQuestion_P3">When did you graduate High school ?</string>
+    <string name="editText_SecurityQuestion_P3"></string>
+
+    <string name="textView_SecurityQuestion_Answer_P3">Answer :</string>
+    <string name="editText_SecurityQuestion_Answer_P3"></string>
+
+
+
+
+
+    //Sign Up Page P4
+
+    <string name="textView_UploadProfilePicture_P4">Chose A Profile Picture :</string>
+    <string name="uploadButton_P4">Upload Image</string>
+    <string name="finishButton_P4">FINISH</string>
+
+
+
+
 </resources>
