@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "31527010775",
+    "firebase_url": "https://zuccstragram.firebaseio.com",
+    "project_id": "zuccstragram",
+    "storage_bucket": "zuccstragram.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31527010775:android:570233c877bf44ab52cb92",
+        "android_client_info": {
+          "package_name": "com.example.zuccstagram_signup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31527010775-8vb3e6k4dqs0p8p47j7hr4ehfi2elo5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR4DO83F7PxUlfTjq4tsOZBiLpUKv7EDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31527010775-8vb3e6k4dqs0p8p47j7hr4ehfi2elo5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
