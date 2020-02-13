@@ -1,5 +1,6 @@
 package com.example.zuccstagram_signup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,10 +10,20 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -31,6 +42,8 @@ public class signUp_P4 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up__p4);
 
+        profile = new Profile();
+
         toolbarSetUp();
         setUpUI();
         uploadButton.setOnClickListener(new View.OnClickListener(){
@@ -46,7 +59,7 @@ public class signUp_P4 extends AppCompatActivity {
             public void onClick(View v) {
                 saveProfile();
                 cleanSharedPreferences();
-                //generateProfile();
+                generateProfile();
             }
         });
 
@@ -57,14 +70,6 @@ public class signUp_P4 extends AppCompatActivity {
 
 
     }
-
-
-
-
-
-
-
-
 
     void toolbarSetUp(){
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -83,6 +88,39 @@ public class signUp_P4 extends AppCompatActivity {
         //TODO create a Profile class and object where you pass all the shared preferences
        //Intent intent = new Intent(this, signUp_P4.class);
         //startActivity(intent);
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("First_Name", profile.getFirstName());
+        docData.put("Last_Name", profile.getLastName());
+        docData.put("Email", profile.getEmail());
+
+        docData.put("Username", profile.getUserName());
+        docData.put("Bio", profile.getBio());
+        docData.put("Password", profile.getPassword());
+
+        docData.put("Security_Q", profile.getSecurityQuestion());
+        docData.put("Security_QA", profile.getSecurityQuestionAnswer());
+        docData.put("Image", "uhh filename goes here(?)");
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("Users").document(profile.getEmail())
+                .set(docData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //Log.d(TAG, "DocumentSnapshot successfully written!");
+                        // SUCCESS
+                        // uhh do something here like return to main page
+                        Log.d("signUp_P4", "Account Created.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //Log.w(TAG, "Error writing document", e);
+                        // ERROR HANDLER
+                    }
+                });
 
     }
 

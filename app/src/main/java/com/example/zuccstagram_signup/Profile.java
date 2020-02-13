@@ -5,8 +5,6 @@ import android.net.Uri;
 
 public class Profile {
 
-
-
     //P1
     private String FirstName;
     private String LastName;
@@ -23,10 +21,6 @@ public class Profile {
 
     //P4
     private Uri profileImage;
-
-
-
-
 
 
     public Profile (){
