@@ -1,4 +1,4 @@
-package com.example.zuccstagram_post;
+package com.example.zuccstagram_signup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +27,7 @@ public class PostMaker extends AppCompatActivity {
     private final static int PICK_IMAGE = 1;
     Uri imageUri;
     private ImageView imageView;
+    String descriptionFinal;
     EditText description;
     Button galleryButton;
     Button cameraButton;
@@ -52,6 +53,13 @@ public class PostMaker extends AppCompatActivity {
                 dispatchCameraPicture();
             }
         });
+         uploadButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 descriptionFinal = description.getText().toString();
+                 uploadPost();
+             }
+         });
     }
 
     private void dispatchCameraPicture() {
@@ -98,7 +106,7 @@ public class PostMaker extends AppCompatActivity {
 
     void uploadPost() {
         Map<String, Object> docData = new HashMap<>();
-        docData.put("Description", description);
+        docData.put("Description", descriptionFinal);
         docData.put("Image", "TBD, filename goes here");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -111,7 +119,7 @@ public class PostMaker extends AppCompatActivity {
                         //Log.d(TAG, "DocumentSnapshot successfully written!");
                         // SUCCESS
                         // uhh do something here like return to main page
-                        Log.d("PostMaker", "Account Created.");
+                        Log.d("PostMaker", "Post Created.");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
