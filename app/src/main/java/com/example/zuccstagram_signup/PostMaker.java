@@ -1,4 +1,4 @@
-package com.example.zuccstagram_post;
+package com.example.zuccstagram_signup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
