@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LogIn_SignUp.SignUp_P2">
+
+
+    <include
+
+        android:id="@+id/toolbar_LogIn_SignUp"
+        layout="@layout/toolbar_login_signin" />
+
+
+
+    <ImageView
+        android:id="@+id/zuccstagram_Logo"
+        android:layout_width="132dp"
+        android:layout_height="121dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_LogIn_SignUp"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/textView_UserName_P2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="180dp"
+        android:text="@string/textView_UserName_P2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_LogIn_SignUp" />
+
+    <EditText
+        android:id="@+id/editText_UserName_P2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="@string/editText_hint_UserName_P2"
+        android:inputType="textPersonName"
+        android:text="@string/editText_UserName_P2"
+        app:layout_constraintStart_toStartOf="@+id/textView_UserName_P2"
+        app:layout_constraintTop_toBottomOf="@+id/textView_UserName_P2" />
+
+    <TextView
+        android:id="@+id/textView_Bio_P2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/textView_Bio_P2"
+        app:layout_constraintStart_toStartOf="@+id/textView_UserName_P2"
+        app:layout_constraintTop_toBottomOf="@+id/editText_UserName_P2" />
+
+    <EditText
+        android:id="@+id/editText_Bio_P2"
+        android:layout_width="216dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="@string/editText_hint_Bio_P2"
+        android:inputType="textPersonName"
+        android:text="@string/editText_Bio_P2"
+        app:layout_constraintStart_toStartOf="@+id/textView_UserName_P2"
+        app:layout_constraintTop_toBottomOf="@+id/textView_Bio_P2" />
+
+
+
+    <TextView
+        android:id="@+id/textView_Password_P2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/textView_Password_P2"
+        app:layout_constraintStart_toStartOf="@+id/textView_UserName_P2"
+        app:layout_constraintTop_toBottomOf="@+id/editText_Bio_P2" />
+
+    <EditText
+        android:id="@+id/editText_Password_P2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="@string/editText_hint_Password_P2"
+        android:inputType="textPassword"
+        android:text="@string/editText_Password_P2"
+        app:layout_constraintStart_toStartOf="@+id/textView_UserName_P2"
+        app:layout_constraintTop_toBottomOf="@+id/textView_Password_P2" />
+
+
+    <TextView
+        android:id="@+id/textView_Password_Confirmation_P2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/textView_Password_Confirmation_P2"
+        app:layout_constraintStart_toStartOf="@+id/textView_UserName_P2"
+        app:layout_constraintTop_toBottomOf="@+id/editText_Password_P2" />
+
+
+    <EditText
+        android:id="@+id/editText_Password_Confirmation_P2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="@string/editText_hint_Password_Confirmation_P2"
+        android:inputType="textPassword"
+        android:text="@string/editText_Password_Confirmation_P2"
+        app:layout_constraintStart_toStartOf="@+id/textView_UserName_P2"
+        app:layout_constraintTop_toBottomOf="@+id/textView_Password_Confirmation_P2" />
+
+
+
+    <Button
+        android:id="@+id/nextButton_P2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="552dp"
+        android:text="@string/nextButton_P1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_LogIn_SignUp" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

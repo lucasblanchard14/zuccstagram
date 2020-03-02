@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LogIn_SignUp.SignUp_P4">
+
+
+
+    <include
+
+        android:id="@+id/toolbar_LogIn_SignUp"
+        layout="@layout/toolbar_login_signin" />
+
+
+    <TextView
+        android:id="@+id/textView_UploadProfilePicture_P4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_LogIn_SignUp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="44dp"
+        android:text="@string/textView_UploadProfilePicture_P4"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_LogIn_SignUp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image_P4"
+        android:layout_width="270dp"
+        android:layout_height="265dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_UploadProfilePicture_P4" />
+
+    <Button
+        android:id="@+id/uploadButton_P4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profile_image_P4"
+        android:layout_alignStart="@+id/profile_image_P4"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/uploadButton_P4"
+        app:layout_constraintStart_toStartOf="@+id/profile_image_P4"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image_P4" />
+
+    <Button
+        android:id="@+id/finishButton_P4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/uploadButton_P4"
+        android:layout_alignStart="@+id/uploadButton_P4"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/finishButton_P4"
+        app:layout_constraintStart_toStartOf="@+id/uploadButton_P4"
+        app:layout_constraintTop_toBottomOf="@+id/uploadButton_P4" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
