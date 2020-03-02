@@ -1,5 +1,8 @@
 package com.example.zuccstagram_signup;
 
+package com.example.zuccstagram_post;
+
+import android.app.ProgressDialog;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,18 +16,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class PostMaker extends AppCompatActivity {
-    private final static int REQUEST_IMAGE_CAPTURE = 1;
-    private final static int PICK_IMAGE = 1;
+    private static int REQUEST_IMAGE_CAPTURE = 0;
+    private static int PICK_IMAGE = 0;
     Uri imageUri;
     private ImageView imageView;
     String descriptionFinal;
@@ -32,12 +41,13 @@ public class PostMaker extends AppCompatActivity {
     Button galleryButton;
     Button cameraButton;
     Button uploadButton;
+    FirebaseStorage storage;
+    StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_maker);
-
         setUpUI();
         galleryButton.setOnClickListener(new View.OnClickListener() {
 
@@ -58,11 +68,15 @@ public class PostMaker extends AppCompatActivity {
              public void onClick(View v) {
                  descriptionFinal = description.getText().toString();
                  uploadPost();
+                 uploadCloudImage();
+
              }
          });
     }
 
     private void dispatchCameraPicture() {
+        REQUEST_IMAGE_CAPTURE = 1;
+        PICK_IMAGE = 0;
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePicture.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePicture, REQUEST_IMAGE_CAPTURE);
@@ -70,11 +84,12 @@ public class PostMaker extends AppCompatActivity {
     }
 
     protected void dispatchGalleryPicture() {
+        PICK_IMAGE = 1;
+        REQUEST_IMAGE_CAPTURE = 0;
         Intent gallery = new Intent();
         gallery.setType("image/*");
         gallery.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(gallery, "Select picture"), PICK_IMAGE);
-
     }
 
     @Override
@@ -97,7 +112,7 @@ public class PostMaker extends AppCompatActivity {
 
     void setUpUI() {
         description = findViewById(R.id.description);
-        imageView = (ImageView) findViewById(R.id.imageView);
+        imageView = findViewById(R.id.imageView);
         cameraButton = findViewById(R.id.cameraButton);
         galleryButton = findViewById(R.id.galleryButton);
         uploadButton = findViewById(R.id.uploadButton);
@@ -130,4 +145,77 @@ public class PostMaker extends AppCompatActivity {
                     }
                 });
     }
+    // code to upload image to cloud
+    private void uploadCloudImage() {
+        if (imageUri != null) {
+            Log.d("PostMaker", "imageURI exists");
+            // Code for showing progressDialog while uploading
+            final ProgressDialog progressDialog
+                    = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            // Defining the child of storageReference
+            StorageReference ref
+                    = storageReference
+                    .child(
+                            "images/"
+                                    + UUID.randomUUID().toString());
+
+            // adding listeners on upload
+            // or failure of image
+            ref.putFile(imageUri )
+                    .addOnSuccessListener(
+                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                                @Override
+                                public void onSuccess(
+                                        UploadTask.TaskSnapshot taskSnapshot) {
+                                    Log.d("PostMaker", "Image uploaded.");
+                                    // Image uploaded successfully
+                                    // Dismiss dialog
+                                    progressDialog.dismiss();
+                                    Toast
+                                            .makeText(PostMaker.this,
+                                                    "Image Uploaded!!",
+                                                    Toast.LENGTH_SHORT)
+                                            .show();
+                                }
+                            })
+
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("PostMaker", "Image failed to upload.");
+                            // Error, Image not uploaded
+                            progressDialog.dismiss();
+                            Toast
+                                    .makeText(PostMaker.this,
+                                            "Failed " + e.getMessage(),
+                                            Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    })
+                    .addOnProgressListener(
+                            new OnProgressListener<UploadTask.TaskSnapshot>() {
+
+                                // Progress Listener for loading
+                                // percentage on the dialog box
+                                @Override
+                                public void onProgress(
+                                        UploadTask.TaskSnapshot taskSnapshot) {
+                                    double progress
+                                            = (100.0
+                                            * taskSnapshot.getBytesTransferred()
+                                            / taskSnapshot.getTotalByteCount());
+                                    Log.d("PostMaker", "image progress at "+ (int) progress + "%");
+                                    progressDialog.setMessage(
+                                            "Uploaded "
+                                                    + (int) progress + "%");
+                                }
+                            });
+        }
+        else{Log.d("PostMaker", "imageURI is null");}
+    }
 }
+
