@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -33,6 +34,7 @@ import java.util.TimeZone;
 public class NotificationsFragment extends Fragment {
 
     private NotificationsViewModel notificationsViewModel;
+    private static final String TAG = "NotificationsFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class NotificationsFragment extends Fragment {
         // WHEN LOGGING IN WORKS AGAIN, SWITCH "Test" WITH ACTUAL USERNAME/EMAIL
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Notifications")
+                //.orderBy("Timestamp", Query.Direction.DESCENDING)
                 .whereEqualTo("Receiver", "Test")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -52,13 +55,13 @@ public class NotificationsFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("NotificationsFragment", document.getId() + " => " + document.getData() + " | " + document.get("Sender"));
+                                Log.d(TAG, document.getId() + " => " + document.getData() + " | " + document.get("Sender"));
                                 Timestamp ts = (Timestamp) document.get("Timestamp");
                                 Date date = ts.toDate();
-                                createTableRow(tl, document.get("Sender").toString(), document.get("Message").toString(), getDateTimeFromTimeStamp( ts.getSeconds() , "dd/MM/yy h:mm a"));
+                                createTableRow(tl, document.get("Sender").toString(), document.get("Message").toString(), getDateTimeFromTimeStamp(ts.getSeconds(), "dd/MM/yy h:mm a"));
                             }
                         } else {
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
