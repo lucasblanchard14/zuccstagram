@@ -1,0 +1,135 @@
+{
+  "project_info": {
+    "project_number": "31527010775",
+    "firebase_url": "https://zuccstragram.firebaseio.com",
+    "project_id": "zuccstragram",
+    "storage_bucket": "zuccstragram.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31527010775:android:56815ee34fc45bbf52cb92",
+        "android_client_info": {
+          "package_name": "com.example.demo_post"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31527010775-8vb3e6k4dqs0p8p47j7hr4ehfi2elo5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR4DO83F7PxUlfTjq4tsOZBiLpUKv7EDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31527010775-8vb3e6k4dqs0p8p47j7hr4ehfi2elo5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31527010775:android:00e3297473d9ba5952cb92",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31527010775-p5phav10sjsd1da9rfp9pucoe8k9dfht.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myapplication",
+            "certificate_hash": "e2f2fdc228c6aee9da0807fcd5b927316986d9f3"
+          }
+        },
+        {
+          "client_id": "31527010775-8vb3e6k4dqs0p8p47j7hr4ehfi2elo5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR4DO83F7PxUlfTjq4tsOZBiLpUKv7EDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31527010775-8vb3e6k4dqs0p8p47j7hr4ehfi2elo5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31527010775:android:d9461352a68882e652cb92",
+        "android_client_info": {
+          "package_name": "com.example.zuccstagram_post"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31527010775-8vb3e6k4dqs0p8p47j7hr4ehfi2elo5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR4DO83F7PxUlfTjq4tsOZBiLpUKv7EDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31527010775-8vb3e6k4dqs0p8p47j7hr4ehfi2elo5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31527010775:android:570233c877bf44ab52cb92",
+        "android_client_info": {
+          "package_name": "com.example.zuccstagram_signup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31527010775-8vb3e6k4dqs0p8p47j7hr4ehfi2elo5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR4DO83F7PxUlfTjq4tsOZBiLpUKv7EDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31527010775-8vb3e6k4dqs0p8p47j7hr4ehfi2elo5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
