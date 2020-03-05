@@ -9,9 +9,11 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="adac6c4c-d551-40be-b02b-07b51f4170d4" name="Default Changelist" comment="">
+    <list default="true" id="adac6c4c-d551-40be-b02b-07b51f4170d4" name="Default Changelist" comment="Implementation of:&#10; - LogIn and Sign In Page&#10; - Log Off Menu Button&#10; - Settings Menu Button&#10; - Settings&#10; - Advance Settings&#10; - &quot;Edit Profile&quot; Activity Skeleton">
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -121,10 +123,10 @@
   <component name="ProjectId" id="1YbWp9exWrwuCzrowO5msp4GPAp" />
   <component name="PropertiesComponent">
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="Pixel_2_API_29" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-03-02T16:42:28.200Z" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-03-05T03:21:57.505Z" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../COEN 390/GitHub/test2/Grandma-Gear/GrandmaGear" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../.." />
     <property name="project.structure.last.edited" value="Dependencies" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -232,7 +234,14 @@
       <option name="project" value="LOCAL" />
       <updated>1583375410438</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Implementation of:&#10; - LogIn and Sign In Page&#10; - Log Off Menu Button&#10; - Settings Menu Button&#10; - Settings&#10; - Advance Settings&#10; - &quot;Edit Profile&quot; Activity Skeleton">
+      <created>1583375802979</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1583375802979</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView">
