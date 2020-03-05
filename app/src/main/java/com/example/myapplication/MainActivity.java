@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.textView19:
+            /*case R.id.textView19:
                 //TODO
                 return true;
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.textView21:
                 //TODO
-                return true;
+                return true;*/
 
             default:
                 return super.onOptionsItemSelected(item);
