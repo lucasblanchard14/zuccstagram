@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,8 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.myapplication.LogIn_SignUp.LogIn_SignUp_Main;
+import com.example.myapplication.ui.Settings.Settings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,15 +33,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.textView19:
+            case R.id.navigation_home:
                 //TODO
+                goToLogInSignUp();
                 return true;
 
-            case R.id.textView20:
+            case R.id.navigation_dashboard:
                 //TODO
+                goToSettings();
                 return true;
 
-            case R.id.textView21:
+            case R.id.navigation_notifications:
                 //TODO
                 return true;
 
@@ -56,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
-        /*AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                .build();*/
+                .build();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
@@ -74,6 +80,19 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_Profile);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("   Zuccstagram");
+
+    }
+    void goToSettings(){
+        Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
+    }
+    void goToLogInSignUp(){
+        Intent intent = new Intent(this, LogIn_SignUp_Main.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed(){
 
     }
 }

@@ -1,9 +1,5 @@
 package com.example.myapplication.LogIn_SignUp;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -11,12 +7,27 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.example.myapplication.MainActivity;
+import com.example.myapplication.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import com.example.myapplication.MainActivity;
-import com.example.myapplication.R;
+
+
+
 
 public class SignUp_P4 extends AppCompatActivity {
 
@@ -26,12 +37,13 @@ public class SignUp_P4 extends AppCompatActivity {
     Button uploadButton;
     Button finishButton;
     Uri imageUri;
-
+    private StorageReference mStorageRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up__p4);
 
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         toolbarSetUp();
         setUpUI();
         uploadButton.setOnClickListener(new View.OnClickListener(){
@@ -125,7 +137,7 @@ public class SignUp_P4 extends AppCompatActivity {
         profile.setSecurityQuestionAnswer(SPH.getSecurityQuestionAnswer());
 
         //P4
-        //profile.setProfileImage(imageUri);
+        //uploadImageToFireBase();
 
     }
 
@@ -142,6 +154,27 @@ public class SignUp_P4 extends AppCompatActivity {
 
 
     //TODO Implement a function that can generate a Profile
+
+
+    private void uploadImageToFireBase(){
+        StorageReference imageProfile = mStorageRef.child("images/rivers.jpg");
+
+        imageProfile.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        //Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        // ...
+                    }
+                });
+    }
 
 
 }
