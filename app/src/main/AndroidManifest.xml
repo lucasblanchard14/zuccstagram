@@ -9,14 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.Settings.Settings"
-            android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".ui.Settings.EditProfile"
-            android:parentActivityName=".ui.Settings.Settings"/>
+        <activity android:name=".ui.PostMaker"></activity>
+        <activity
+            android:name=".ui.Settings.Settings"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ui.Settings.EditProfile"
+            android:parentActivityName=".ui.Settings.Settings" />
         <activity
             android:name=".ui.Settings.AdvanceSettingsActivity"
-            android:parentActivityName=".ui.Settings.Settings"
-            android:label="@string/title_activity_settings" />
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.Settings.Settings" />
         <activity
             android:name=".LogIn_SignUp.SignUp_P1"
             android:parentActivityName=".LogIn_SignUp.LogIn_SignUp_Main" />

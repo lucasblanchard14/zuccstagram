@@ -1,15 +1,22 @@
 package com.example.myapplication.LogIn_SignUp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class LogIn_SignUp_Main extends AppCompatActivity {
     EditText editText_Email;
@@ -36,7 +43,7 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO create an intent function to go to timeline
-                //ValidateLogIn();
+                ValidateLogIn();
 
                 //goToTimeLine();
             }
@@ -48,7 +55,7 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
     }
 
 
-    /*
+
     void ValidateLogIn(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -64,6 +71,7 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
                             if(task.getResult().size() > 0){
                                 Log.d("MainActivity", "Login Successful.");
 								// THIS IS WHEN WE JUMP TO
+                                goToTimeLine();
                             }
                             // User not found
                             else{
@@ -76,7 +84,7 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
                     }
                 });
     }
-     */
+
 
 
 
@@ -99,4 +107,13 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
         Intent intent = new Intent(this, SignUp_P1.class);
         startActivity(intent);
     }
+
+    protected void goToTimeLine()
+    {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+
+
 }

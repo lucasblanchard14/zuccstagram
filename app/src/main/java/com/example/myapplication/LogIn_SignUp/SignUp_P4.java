@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -17,11 +18,14 @@ import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -84,7 +88,7 @@ public class SignUp_P4 extends AppCompatActivity {
     }
 
     protected void generateProfile(){
-        /*
+
         Map<String, Object> docData = new HashMap<>();
         docData.put("First_Name", profile.getFirstName());
         docData.put("Last_Name", profile.getLastName());
@@ -109,6 +113,9 @@ public class SignUp_P4 extends AppCompatActivity {
                         // SUCCESS
                         // uhh do something here like return to main page
                         Log.d("signUp_P4", "Account Created.");
+                        goToTimeLine();
+
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -119,12 +126,14 @@ public class SignUp_P4 extends AppCompatActivity {
                     }
                 });
 
-         */
+
 
         //TODO create a Profile class and object where you pass all the shared preferences
+    }
+
+    void goToTimeLine(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-
     }
 
 

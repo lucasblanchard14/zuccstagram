@@ -9,8 +9,8 @@
 
     <item
         android:id="@+id/navigation_dashboard"
-        android:title="@string/title_editProfile"
-        app:showAsAction="never"/>
+        android:title="@string/title_settings"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/navigation_notifications"

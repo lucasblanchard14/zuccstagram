@@ -119,13 +119,12 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="title_editProfile">Edit Profile</string>
+    <string name="title_settings">Settings</string>
     <string name="edit_Profile">Edit Profile</string>
     <string name="help_support">Help and Support</string>
     <string name="account_privacy">Account Privacy</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="advance_setting">Advance Settings</string>
-
 
 
     <string name="key_edit_profile">key_edit_profile</string>
