@@ -36,6 +36,8 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO create an intent function to go to timeline
+                //ValidateLogIn();
+
                 //goToTimeLine();
             }
         });
@@ -46,7 +48,35 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
     }
 
 
+    /*
+    void ValidateLogIn(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        db.collection("Users")
+                .whereEqualTo("Email", editText_Email.getText().toString())
+                .whereEqualTo("Password", editText_Password.getText().toString())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // User found
+                            if(task.getResult().size() > 0){
+                                Log.d("MainActivity", "Login Successful.");
+								// THIS IS WHEN WE JUMP TO
+                            }
+                            // User not found
+                            else{
+                                Log.d("MainActivity", "Login Failed.");
+                            }
+                        } else {
+                            Log.d("MainActivity", "Login Failed.");
+                            //Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+     */
 
 
 

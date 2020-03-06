@@ -84,6 +84,43 @@ public class SignUp_P4 extends AppCompatActivity {
     }
 
     protected void generateProfile(){
+        /*
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("First_Name", profile.getFirstName());
+        docData.put("Last_Name", profile.getLastName());
+        docData.put("Email", profile.getEmail());
+
+        docData.put("Username", profile.getUserName());
+        docData.put("Bio", profile.getBio());
+        docData.put("Password", profile.getPassword());
+
+        docData.put("Security_Q", profile.getSecurityQuestion());
+        docData.put("Security_QA", profile.getSecurityQuestionAnswer());
+        docData.put("Image", "uhh filename goes here(?)");
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("Users").document(profile.getEmail())
+                .set(docData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //Log.d(TAG, "DocumentSnapshot successfully written!");
+                        // SUCCESS
+                        // uhh do something here like return to main page
+                        Log.d("signUp_P4", "Account Created.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //Log.w(TAG, "Error writing document", e);
+                        // ERROR HANDLER
+                    }
+                });
+
+         */
+
         //TODO create a Profile class and object where you pass all the shared preferences
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
