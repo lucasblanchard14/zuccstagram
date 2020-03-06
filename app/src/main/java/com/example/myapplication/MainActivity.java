@@ -1,17 +1,22 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.myapplication.LogIn_SignUp.LogIn_SignUp_Main;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,17 +34,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            /*case R.id.textView19:
+            case R.id.navigation_home:
                 //TODO
+                goToLogInSignUp();
                 return true;
 
-            case R.id.textView20:
+            case R.id.navigation_dashboard:
                 //TODO
+                goToSettings();
                 return true;
 
-            case R.id.textView21:
+            case R.id.navigation_notifications:
                 //TODO
-                return true;*/
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -51,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        toolbarSetUp();
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -68,4 +76,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    void toolbarSetUp(){
+        Toolbar toolbar = findViewById(R.id.toolbar_Profile);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("   Zuccstagram");
+
+    }
+    void goToSettings(){
+        Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
+    }
+    void goToLogInSignUp(){
+        Intent intent = new Intent(this, LogIn_SignUp_Main.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed(){
+
+    }
 }
