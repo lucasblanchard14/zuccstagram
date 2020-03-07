@@ -17,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.myapplication.LogIn_SignUp.LogIn_SignUp_Main;
+import com.example.myapplication.ui.Settings.settings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     void goToSettings(){
-        Intent intent = new Intent(this, Settings.class);
+        Intent intent = new Intent(this, settings.class);
         startActivity(intent);
     }
     void goToLogInSignUp(){

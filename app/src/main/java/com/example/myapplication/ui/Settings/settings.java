@@ -14,7 +14,7 @@ import com.example.myapplication.R;
 
 import java.util.ArrayList;
 
-public class Settings extends AppCompatActivity {
+public class settings extends AppCompatActivity {
 
 
     ListView listViewSettings;
