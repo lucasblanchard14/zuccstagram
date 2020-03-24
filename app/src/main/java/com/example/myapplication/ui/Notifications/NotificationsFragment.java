@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.myapplication.LogIn_SignUp.SharedPreferenceHelper;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -44,11 +45,13 @@ public class NotificationsFragment extends Fragment {
 
         final TableLayout tl = (TableLayout) root.findViewById(R.id.notificationTable);
 
-        // WHEN LOGGING IN WORKS AGAIN, SWITCH "Test" WITH ACTUAL USERNAME/EMAIL
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(getActivity());
+
+        // Get all of user's notifications
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Notifications")
                 //.orderBy("Timestamp", Query.Direction.DESCENDING)
-                .whereEqualTo("Receiver", "Test")
+                .whereEqualTo("Receiver", SPH.getCurrentUserEmail())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

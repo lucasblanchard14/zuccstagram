@@ -1,11 +1,15 @@
 package com.example.myapplication.ui.Profile;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.myapplication.LogIn_SignUp.SharedPreferenceHelper;
 import com.example.myapplication.R;
 import com.example.myapplication.SectionsPageAdapter;
 import com.example.myapplication.ui.Bio.BioFragment;
@@ -29,6 +34,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -45,6 +52,10 @@ public class ProfileFragment extends Fragment {
     private boolean canFollow;
     private Button fb;
 
+    private TextView username;
+    private ImageView pfp;
+    private TextView bio;
+
     // PLACEHOLDERS
     private String user = "test@test.com";
     private String visiting = "account1@test.com";
@@ -57,18 +68,86 @@ public class ProfileFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-        TextView username = root.findViewById(R.id.usernameTextView);
-        username.setText("Account1");
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(getActivity());
+        user = SPH.getCurrentUserEmail();
+        visiting = SPH.getCurrentVisitingEmail();
+
+        //Toast toast = Toast.makeText(getActivity(), "TEST... " + user + " | " + visiting, Toast.LENGTH_SHORT);
+        //toast.show();
+
+        username = root.findViewById(R.id.usernameTextView);
+        pfp = root.findViewById(R.id.imageView);
+        bio = root.findViewById(R.id.textView2);
+
+        // TODO: LOAD ALL ACCOUNT INFORMATION HERE
+
+        // Get visited account's information
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Users")
+                //.orderBy("Timestamp", Query.Direction.DESCENDING)
+                .whereEqualTo("Email", visiting)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData() + " | " + document.get("Sender"));
+                                buildProfile(document);
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+
+        /////////
+
 
         fb = root.findViewById(R.id.followButton);
 
         // Don't show button if this is your own page
-        if(user == visiting)
+        if(user.equals(visiting))
             fb.setVisibility(View.GONE);
         else
             CheckIfFollowed();
 
         return root;
+    }
+
+    public void buildProfile(QueryDocumentSnapshot doc){
+        // Username
+        username.setText(doc.get("Username").toString());
+        // Bio
+        //bio.setText(doc.get("Username").toString());
+
+        // Profile Pic
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        // Get image location
+        String filename = "gs://zuccstragram.appspot.com/Images/User_Profile/" + doc.get("Image").toString();
+        StorageReference gsReference = storage.getReferenceFromUrl(filename);
+
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        gsReference.getBytes(ONE_MEGABYTE*4).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                pfp.setImageBitmap(bmp);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+
+        //gs://zuccstragram.appspot.com/Images/User_Profile/test_pfp.png
+
+
     }
 
     public void Follow(){

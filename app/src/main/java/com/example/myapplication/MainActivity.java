@@ -6,17 +6,23 @@ import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentController;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.myapplication.LogIn_SignUp.LogIn_SignUp_Main;
+import com.example.myapplication.ui.Search.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.navigation_notifications:
                 //TODO
+                goToSearch();
                 return true;
 
             default:
@@ -91,8 +98,26 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    void goToSearch(){
+        // How do I do this?
+        Fragment fragment = new SearchFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+        Toast toast = Toast.makeText(this, "TEST...", Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
     @Override
     public void onBackPressed(){
-
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            //Log.i("MainActivity", "popping backstack");
+            fm.popBackStack();
+        } else {
+            //Log.i("MainActivity", "nothing on backstack, calling super");
+            //super.onBackPressed();
+        }
     }
 }

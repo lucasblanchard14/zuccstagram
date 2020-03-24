@@ -85,9 +85,6 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
                 });
     }
 
-
-
-
     void toolbarSetUp(){
         Toolbar toolbar = findViewById(R.id.toolbar_LogIn_SignUp);
         setSupportActionBar(toolbar);
@@ -110,6 +107,11 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
 
     protected void goToTimeLine()
     {
+        // Add user data to SharedPreferences
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
+        SPH.setCurrentUserEmail(editText_Email.getText().toString());
+        SPH.setCurrentVisitingEmail(editText_Email.getText().toString());
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

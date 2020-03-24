@@ -119,4 +119,31 @@ public class SharedPreferenceHelper {
     public void setProfile(Profile profile) {
         this.profile = profile;
     }
+
+
+    ////////////////////////////
+
+    // This section is for afterwards
+
+    // Returns user's email
+    public String getCurrentUserEmail() {
+        return sharedPreferences_Profile.getString("userEmail", null);
+    }
+    // Sets user's email
+    public void setCurrentUserEmail(String ue) {
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        editor.putString("userEmail", ue);
+        editor.commit();
+    }
+
+    // Returns email of account you're visiting
+    public String getCurrentVisitingEmail() {
+        return sharedPreferences_Profile.getString("visitingEmail", null);
+    }
+    // Sets email of account you're visiting
+    public void setCurrentVisitingEmail(String ve) {
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        editor.putString("visitingEmail", ve);
+        editor.commit();
+    }
 }
