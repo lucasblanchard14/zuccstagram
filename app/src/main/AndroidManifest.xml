@@ -9,6 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".DetailPostFragment"></activity>
+        <activity android:name=".PostsFragment"></activity>
         <activity android:name=".ui.PostMaker"></activity>
         <activity
             android:name=".ui.Settings.Settings"
