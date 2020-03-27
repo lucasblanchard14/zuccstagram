@@ -15,10 +15,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.myapplication.PostsFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.SectionsPageAdapter;
 import com.example.myapplication.ui.Bio.BioFragment;
-import com.example.myapplication.ui.Posts.PostsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
