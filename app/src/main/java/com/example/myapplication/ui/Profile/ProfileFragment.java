@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+
 import com.example.myapplication.PostsFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.SectionsPageAdapter;
