@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.DetailedPost;
+package com.example.myapplication;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,19 +10,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.myapplication.R;
 import com.example.myapplication.R.layout;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CommentDialog extends AppCompatDialogFragment {
 
@@ -51,7 +42,6 @@ public class CommentDialog extends AppCompatDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         String username = d_username.getText().toString();
                         String comment = d_comment.getText().toString();
-                        uploadComment(username, comment);
                         listener.applyTexts(username,comment);
                     }
                 });
@@ -75,33 +65,5 @@ public class CommentDialog extends AppCompatDialogFragment {
 
     public interface CommentDialogListener{
         void applyTexts(String username, String comment);
-    }
-
-    public void uploadComment(String username, String content){
-        Map<String, Object> docData = new HashMap<>();
-        Timestamp ts = new Timestamp(new Date());
-        docData.put("Comment", "TestPostID|"+ts.getSeconds());
-        docData.put("Post", "TestPostID");
-        docData.put("User", username);
-        docData.put("Text", content);
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("Comments").document("TestPostID|"+ts.getSeconds())
-                .set(docData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        //Log.d(TAG, "DocumentSnapshot successfully written!");
-                        // SUCCESS
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        //Log.w(TAG, "Error writing document", e);
-                        // ERROR HANDLER
-                    }
-                });
     }
 }

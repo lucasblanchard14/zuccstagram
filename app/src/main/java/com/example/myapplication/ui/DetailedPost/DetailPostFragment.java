@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,21 +24,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.myapplication.R;
-import com.example.myapplication.ui.DetailedPost.CommentDialog;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -71,31 +57,8 @@ public class DetailPostFragment extends AppCompatActivity implements CommentDial
                 showCommentDialog();
             }
         });
-
-        fetchComments();
     }
 
-    public void fetchComments(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Comments")
-                .whereEqualTo("Post", "TestPostID")
-	            .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String user = document.get("User").toString();
-                                String text = document.get("Text").toString();
-
-                                applyTexts(user, text);
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-    }
 
     public void showCommentDialog(){
         CommentDialog dialog = new CommentDialog();
@@ -108,12 +71,8 @@ public class DetailPostFragment extends AppCompatActivity implements CommentDial
         generateTableRow();
         comment_username.setText(username);
         comment_content.setText(comment);
-
-        //uploadComment();
-
         emptycomments.setVisibility(View.INVISIBLE);
     }
-
 
 
     public void generateTableRow() {
