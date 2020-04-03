@@ -9,6 +9,7 @@
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="150dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,12 +23,13 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/imageView1"
+                    android:id="@+id/post1"
                     android:layout_width="125dp"
                     android:layout_height="125dp"
                     android:layout_margin="5dp"
                     android:contentDescription="@string/pfp_description"
-                    app:srcCompat="@drawable/placeholder" />
+                    app:srcCompat="@drawable/imgpost"
+                    android:scaleType="centerCrop" />
 
                 <ImageView
                     android:id="@+id/imageView2"
