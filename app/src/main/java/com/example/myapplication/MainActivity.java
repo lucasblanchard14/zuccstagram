@@ -6,6 +6,7 @@ import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.myapplication.LogIn_SignUp.LogIn_SignUp_Main;
+import com.example.myapplication.ui.Search.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.navigation_notifications:
                 //TODO
+                goToSearch();
                 return true;
 
             default:
@@ -89,6 +92,20 @@ public class MainActivity extends AppCompatActivity {
     void goToLogInSignUp(){
         Intent intent = new Intent(this, LogIn_SignUp_Main.class);
         startActivity(intent);
+    }
+
+    void goToSearch(){
+        // How do I do this?
+        /*Fragment fragment = new SearchFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();*/
+        Intent intent = new Intent(this, SearchFragment.class);
+        startActivity(intent);
+
+        Toast toast = Toast.makeText(this, "TEST...", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override
