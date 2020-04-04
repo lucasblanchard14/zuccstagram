@@ -18,6 +18,17 @@ public class SharedPreferenceHelper {
 
     }
 
+
+    public void saveProfileSettings_Login(String Email, String Password) {
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        editor.putString("editText_Email", Email);
+        editor.putString("editText_Password", Password);
+        editor.commit();
+
+    }
+
+
+
     public void saveProfileSettings_P1(String FirstName, String LastName, String Email, String ConfirmationEmail) {
         SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
         editor.putString("editText_FirstName", FirstName);
