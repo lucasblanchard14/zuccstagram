@@ -31,16 +31,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -65,10 +62,8 @@ public class EditProfile extends AppCompatActivity {
     Button uploadButton;
     Button savedButton;
     Uri imageUri;
-    private StorageReference mStorageRef;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "Edit Profile";
-    private DatabaseReference ref;
     StorageReference storageReference;
 
 
@@ -114,12 +109,24 @@ public class EditProfile extends AppCompatActivity {
             public void onClick(View v) {
                 uploadImage();
                 updateProfile();
+                updateSharedPreferences();
+                goToSetting();
                 //deleteCurrentProfilePicture();
             }
         });
 
 
 
+    }
+
+    protected void goToSetting()
+    {
+        Intent intent = new Intent(this, Setting.class);
+        startActivity(intent);
+    }
+    public void updateSharedPreferences(){
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
+        SPH.fetchProfile();
     }
 
     public void updateProfile(){
