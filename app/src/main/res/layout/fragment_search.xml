@@ -10,8 +10,8 @@
 
     <include
 
-        android:id="@+id/toolbar_Settings"
-        layout="@layout/toolbar_settings" />
+        android:id="@+id/toolbar_Setting"
+        layout="@layout/toolbar_setting" />
 
     <TableLayout
         android:id="@+id/searchLayout"
