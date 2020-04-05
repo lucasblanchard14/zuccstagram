@@ -131,6 +131,8 @@ public class SignUp_P4 extends AppCompatActivity {
         //TODO create a Profile class and object where you pass all the shared preferences
     }
 
+
+
     void goToTimeLine(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -165,36 +167,13 @@ public class SignUp_P4 extends AppCompatActivity {
 
     void saveProfile(){
 
-        SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
-        profile = new Profile();
-
-        //P1
-        profile.setFirstName(SPH.getFirstName());
-        profile.setLastName(SPH.getLastName());
-        profile.setEmail(SPH.getEmail());
-
-        //P2
-        profile.setUserName(SPH.getUserName());
-        profile.setBio(SPH.getBio());
-        profile.setPassword(SPH.getPassword());
-
-        //P3
-        profile.setSecurityQuestion(SPH.getSecurityQuestion());
-        profile.setSecurityQuestionAnswer(SPH.getSecurityQuestionAnswer());
-
-        //P4
-        //uploadImageToFireBase();
 
     }
 
 
     void cleanSharedPreferences(){
 
-        SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
-        SPH.saveProfileSettings_P1(null,null,null,null);
-        SPH.saveProfileSettings_P2(null,null,null,null);
-        SPH.saveProfileSettings_P3(null,null);
-        imageUri = null;
+
 
     }
 

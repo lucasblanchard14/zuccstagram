@@ -69,6 +69,9 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // User found
                             if(task.getResult().size() > 0){
+                                SharedPreferenceHelper SPH = new SharedPreferenceHelper(getApplicationContext());
+                                SPH.saveProfileSettings_Login(editText_Email.getText().toString(), editText_Password.getText().toString());
+                                SPH.fetchProfile();
                                 Log.d("MainActivity", "Login Successful.");
 								// THIS IS WHEN WE JUMP TO
                                 goToTimeLine();

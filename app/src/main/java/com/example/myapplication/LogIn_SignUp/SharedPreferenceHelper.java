@@ -2,21 +2,46 @@ package com.example.myapplication.LogIn_SignUp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.example.myapplication.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 public class SharedPreferenceHelper {
 
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private SharedPreferences sharedPreferences_Profile;
     private Profile profile;
-
+    private static final String TAG = "__SPH";
 
     public SharedPreferenceHelper(Context context) {
         sharedPreferences_Profile = context.getSharedPreferences(context.getString(R.string.sharedPreferences_Profile), Context.MODE_PRIVATE);
 
 
     }
+
+
+    public void saveProfileSettings_Login(String Email, String Password) {
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        editor.putString("editText_Email", Email);
+        editor.putString("editText_Password", Password);
+        editor.commit();
+
+    }
+
+
 
     public void saveProfileSettings_P1(String FirstName, String LastName, String Email, String ConfirmationEmail) {
         SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
@@ -50,6 +75,39 @@ public class SharedPreferenceHelper {
         //TODO find a way to save a picture, temporarily
 
     }
+
+    public void fetchProfile(){
+
+        db.collection("Users").document(getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+                        editor.putString("editText_FirstName", document.get("First_Name").toString());
+                        editor.putString("editText_LastName", document.get("Last_Name").toString());
+                        editor.putString("editText_Bio", document.get("Bio").toString());
+                        editor.putString("editText_Password", document.get("Password").toString());
+                        editor.putString("editText_SecurityQuestion", document.get("Security_Q").toString());
+                        editor.putString("editText_SecurityQuestionAnswer", document.get("Security_QA").toString());
+                        editor.putString("editText_UserName", document.get("Username").toString());
+                        editor.putString("currentProfilePictureID", document.get("Image").toString());
+                        editor.putString("ImageCount", document.get("ImageCount").toString());
+
+
+                    }
+                    else{
+                        Log.d(TAG, "No documents: ");
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+    }
+
 
 
     //Get function P1
@@ -98,6 +156,15 @@ public class SharedPreferenceHelper {
 
     public String getConfirmationPassword() {
         return sharedPreferences_Profile.getString("editText_ConfirmationPassword", null);
+    }
+
+
+    public String getImageCount() {
+        return sharedPreferences_Profile.getString("ImageCount", null);
+    }
+
+    public String getCurrentProfilePictureID() {
+        return sharedPreferences_Profile.getString("currentProfilePictureID", null);
     }
 
 
