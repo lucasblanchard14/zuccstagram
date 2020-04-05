@@ -21,6 +21,9 @@
             android:label="@string/title_activity_settings"
             android:parentActivityName=".ui.Settings.Setting" />
         <activity
+            android:name=".ui.Search.SearchFragment"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".LogIn_SignUp.SignUp_P1"
             android:parentActivityName=".LogIn_SignUp.LogIn_SignUp_Main" />
         <activity
