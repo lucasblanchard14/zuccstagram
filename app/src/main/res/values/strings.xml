@@ -6,6 +6,7 @@
 
     <string name="app_name">Zuccstagram_SignUp</string>
     <string name="sharedPreferences_Profile">sharedPreferences_Profile</string>
+    <string name="sharedPreferences_Other">sharedPreferences_Other</string>
 
     <string name="logInButton">Log In</string>
     <string name="signUpButton">Sign Up</string>
