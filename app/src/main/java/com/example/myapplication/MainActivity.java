@@ -17,6 +17,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.myapplication.LogIn_SignUp.LogIn_SignUp_Main;
+import com.example.myapplication.LogIn_SignUp.SharedPreferenceHelper;
+import com.example.myapplication.ui.Profile.ProfileFragment;
 import com.example.myapplication.ui.Search.SearchFragment;
 import com.example.myapplication.ui.Settings.Setting;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,7 +26,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,21 +96,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void goToSearch(){
-        // How do I do this?
-        /*Fragment fragment = new SearchFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();*/
         Intent intent = new Intent(this, SearchFragment.class);
         startActivity(intent);
-
-        Toast toast = Toast.makeText(this, "TEST...", Toast.LENGTH_SHORT);
-        toast.show();
     }
 
     @Override
     public void onBackPressed(){
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
 
+        //TODO: BRING USER BACK TO THEIR PAGE ON BACK PRESS
+
+        // If the user is looking at someone else's page, bring them back to theirs
+        if(!SPH.isOnYourProfile())
+            SPH.switchToProfile();
+
+
+
+        //ProfileFragment fragment = (ProfileFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_profile);
+        //fragment.loadProfile();
     }
 }

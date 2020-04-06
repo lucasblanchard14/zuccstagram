@@ -1,6 +1,7 @@
 package com.example.myapplication.LogIn_SignUp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,11 +29,13 @@ public class SharedPreferenceHelper {
     private SharedPreferences sharedPreferences_Other;         // This is the data of the account you're visiting
     private Profile profile;
     private static final String TAG = "__SPH";
-    private boolean onYourProfile = true;
+
+    private Context context;
 
     public SharedPreferenceHelper(Context context) {
         sharedPreferences_Profile = context.getSharedPreferences(context.getString(R.string.sharedPreferences_Profile), Context.MODE_PRIVATE);
         sharedPreferences_Other = context.getSharedPreferences(context.getString(R.string.sharedPreferences_Other), Context.MODE_PRIVATE);
+        this.context = context;
     }
 
 
@@ -76,8 +80,7 @@ public class SharedPreferenceHelper {
 
     }
 
-    public void fetchProfile(){
-        onYourProfile = true;
+    /*public void fetchProfile(String[] data){
         db.collection("Users").document(getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -93,11 +96,10 @@ public class SharedPreferenceHelper {
                         editor.putString("editText_SecurityQuestionAnswer", document.get("Security_QA").toString());
                         editor.putString("editText_UserName", document.get("Username").toString());
                         editor.putString("currentProfilePictureID", document.get("Image").toString());
-                        editor.putString("ImageCount", document.get("ImageCount").toString());
-
-                        //editor.putString("currentProfilePictureData", fetchImageData(document.get("Image").toString()));
-
+                        //editor.putString("ImageCount", document.get("ImageCount").toString());
                         editor.commit();
+
+
                     }
                     else{
                         Log.d(TAG, "No documents: ");
@@ -107,6 +109,23 @@ public class SharedPreferenceHelper {
                 }
             }
         });
+
+    }*/
+
+    public void fetchProfile(String[] data){
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        editor.putString("editText_FirstName", data[0]);
+        editor.putString("editText_LastName", data[1]);
+        editor.putString("editText_Bio", data[2]);
+        editor.putString("editText_Password", data[3]);
+        editor.putString("editText_SecurityQuestion", data[4]);
+        editor.putString("editText_SecurityQuestionAnswer", data[5]);
+        editor.putString("editText_UserName", data[6]);
+        editor.putString("currentProfilePictureID", data[7]);
+        //editor.putString("ImageCount", document.get("ImageCount").toString());
+        editor.commit();
+
+        switchToProfile();
 
     }
 
@@ -220,41 +239,42 @@ public class SharedPreferenceHelper {
 
     // SECTION FOR FETCHING AND STORING OTHER USER'S INFORMATION
     public boolean isOnYourProfile(){
-        return onYourProfile;
+        return sharedPreferences_Profile.getBoolean("On_Your_Profile", true);
     }
 
-    public void fetchOthersProfile(String email){
-        onYourProfile = false;
-        db.collection("Users").document(getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        SharedPreferences.Editor editor = sharedPreferences_Other.edit();
-                        editor.putString("editText_FirstName", document.get("First_Name").toString());
-                        editor.putString("editText_LastName", document.get("Last_Name").toString());
-                        editor.putString("editText_Bio", document.get("Bio").toString());
-                        editor.putString("editText_Password", document.get("Password").toString());
-                        editor.putString("editText_SecurityQuestion", document.get("Security_Q").toString());
-                        editor.putString("editText_SecurityQuestionAnswer", document.get("Security_QA").toString());
-                        editor.putString("editText_UserName", document.get("Username").toString());
-                        editor.putString("currentProfilePictureID", document.get("Image").toString());
-                        editor.putString("ImageCount", document.get("ImageCount").toString());
+    public void switchToProfile(){
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        editor.putBoolean("On_Your_Profile", true);
+        editor.commit();
+    }
 
-                        //editor.putString("currentProfilePictureData", fetchImageData(document.get("Image").toString()));
+    public void switchToOther(){
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        editor.putBoolean("On_Your_Profile", false);
+        editor.commit();
+    }
 
-                        editor.commit();
-                    }
-                    else{
-                        Log.d(TAG, "No documents: ");
-                    }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
-            }
-        });
+    public boolean isLastAccountVisited(){
+        return sharedPreferences_Profile.getBoolean("Last_Account_Visited", false);
+    }
 
+    public void setNewLastAccountVisited(){
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        boolean last = sharedPreferences_Profile.getBoolean("On_Your_Profile", false);
+        editor.putBoolean("Last_Account_Visited", last);
+        editor.commit();
+    }
+
+    public void fetchOthersProfile(String[] data){
+        SharedPreferences.Editor editor = sharedPreferences_Other.edit();
+        editor.putString("editText_FirstName", data[0]);
+        editor.putString("editText_LastName", data[1]);
+        editor.putString("editText_Bio", data[2]);
+        editor.putString("editText_UserName", data[3]);
+        editor.putString("currentProfilePictureID", data[4]);
+        editor.putString("editText_Email", data[5]);
+        editor.commit();
+        switchToOther();
     }
 
     public String getOtherUserName() {

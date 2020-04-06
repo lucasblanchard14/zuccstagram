@@ -2,6 +2,7 @@ package com.example.myapplication.ui.Settings;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -79,7 +80,7 @@ public class EditProfile extends AppCompatActivity {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     //private String tempProfilePictureID = UUID.randomUUID().toString();
     private String currentProfilePictureID;
-
+    private Context context;
 
 
 
@@ -89,6 +90,7 @@ public class EditProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        context = this;
 
         toolbarSetUp();
         setUpUI();
@@ -110,7 +112,7 @@ public class EditProfile extends AppCompatActivity {
                 uploadImage();
                 updateProfile();
                 updateSharedPreferences();
-                goToSetting();
+                //goToSetting();
                 //deleteCurrentProfilePicture();
             }
         });
@@ -125,8 +127,35 @@ public class EditProfile extends AppCompatActivity {
         startActivity(intent);
     }
     public void updateSharedPreferences(){
-        SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
-        SPH.fetchProfile();
+        SharedPreferenceHelper SPH1 = new SharedPreferenceHelper(this);
+        db.collection("Users").document(SPH1.getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        SharedPreferenceHelper SPH2 = new SharedPreferenceHelper(context);
+
+                        String[] data = {document.get("First_Name").toString(),
+                                document.get("Last_Name").toString(),
+                                document.get("Bio").toString(),
+                                document.get("Password").toString(),
+                                document.get("Security_Q").toString(),
+                                document.get("Security_QA").toString(),
+                                document.get("Username").toString(),
+                                document.get("Image").toString()
+                        };
+                        SPH2.fetchProfile(data);
+                        goToSetting();
+                    }
+                    else{
+                        Log.d(TAG, "No documents: ");
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
     }
 
     public void updateProfile(){

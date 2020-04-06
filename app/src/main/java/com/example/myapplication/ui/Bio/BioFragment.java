@@ -19,6 +19,7 @@ public class BioFragment extends Fragment {
 
     private BioViewModel bioViewModel;
     private TextView bio;
+    SharedPreferenceHelper SPH;
 
     private static final String TAG = "BioFragment";
 
@@ -28,21 +29,26 @@ public class BioFragment extends Fragment {
                 ViewModelProviders.of(this).get(BioViewModel.class);
         View root = inflater.inflate(R.layout.fragment_bio, container, false);
 
-        SharedPreferenceHelper SPH = new SharedPreferenceHelper(getActivity());
+
         bio = root.findViewById(R.id.textView2);
+        SPH = new SharedPreferenceHelper(getActivity());
+
+        return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadProfile();
+    }
+
+    public void loadProfile(){
 
         if(SPH.isOnYourProfile()){
-            //Toast toast = Toast.makeText(getActivity(), "TEST... " + SPH.getBio(), Toast.LENGTH_SHORT);
-            //toast.show();
             bio.setText(SPH.getBio());
         }
         else{
             bio.setText(SPH.getOtherBio());
         }
-
-
-
-
-        return root;
     }
 }

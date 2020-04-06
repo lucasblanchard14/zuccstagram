@@ -55,9 +55,12 @@ public class ProfileFragment extends Fragment {
     private TextView username;
     private ImageView pfp;
 
+
+
     // PLACEHOLDERS
     //private String user = "test@test.com";
     //private String visiting = "account1@test.com";
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -70,59 +73,48 @@ public class ProfileFragment extends Fragment {
         ////
 
         SPH = new SharedPreferenceHelper(getActivity());
-        //user = SPH.getEmail();
-        //visiting = SPH.getVisitingEmail();
-        //visiting = SPH.getEmail();
-
-        //Toast toast = Toast.makeText(getActivity(), "TEST... " + user + " | " + visiting, Toast.LENGTH_SHORT);
-        //toast.show();
-
         username = root.findViewById(R.id.usernameTextView);
         pfp = root.findViewById(R.id.imageView);
         fb = root.findViewById(R.id.followButton);
 
-        // TODO: LOAD ALL ACCOUNT INFORMATION HERE
-
-        // Get visited account's information
-        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Users")
-                //.orderBy("Timestamp", Query.Direction.DESCENDING)
-                .whereEqualTo("Email", visiting)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData() + " | " + document.get("Sender"));
-                                buildProfile(document);
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });*/
-
-        // Is this our profile page?
-        if(SPH.isOnYourProfile()){
-            buildProfile(SPH.getUserName(), SPH.getCurrentProfilePictureID());
-            fb.setVisibility(View.GONE); // Don't show follow button if this is your own page
-        }
-        else{
-            buildProfile(SPH.getOtherUserName(), SPH.getOtherProfilePictureID());
-            CheckIfFollowed();
-        }
+        //loadProfile();
 
         ////
 
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadProfile();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SPH.switchToProfile();
+    }
+
+    public void loadProfile(){
+        // Is this our profile page?
+        if(SPH.isOnYourProfile()){
+            buildProfile(SPH.getUserName(), SPH.getCurrentProfilePictureID());
+            fb.setVisibility(View.GONE); // Don't show follow button if this is your own page
+        }
+        else{
+
+            buildProfile(SPH.getOtherUserName(), SPH.getOtherProfilePictureID());
+            fb.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void buildProfile(String user, String img){
         // Username
         username.setText(user);
-        // Bio
-        //bio.setText(doc.get("Username").toString());
+
+        //Toast toast = Toast.makeText(getActivity(), user + "|" + img, Toast.LENGTH_SHORT);
+        //toast.show();
 
         // Profile Pic
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -150,7 +142,8 @@ public class ProfileFragment extends Fragment {
 
         //gs://zuccstragram.appspot.com/Images/User_Profile/test_pfp.png
 
-
+        if(!SPH.isOnYourProfile())
+            CheckIfFollowed();
     }
 
     public void Follow(){
@@ -169,6 +162,7 @@ public class ProfileFragment extends Fragment {
                         // Send Notification
                         Timestamp ts = new Timestamp(new Date());
                         Map<String, Object> notice = new HashMap<>();
+                        notice.put("SenderName", SPH.getUserName());
                         notice.put("Sender", SPH.getEmail());
                         notice.put("Receiver", SPH.getOtherEmail());
                         notice.put("Message", "Followed");
@@ -189,7 +183,7 @@ public class ProfileFragment extends Fragment {
                                     }
                                 });
 
-                        Toast toast = Toast.makeText(getActivity(), "Following " + SPH.getOtherEmail(), Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(getActivity(), "Following " + SPH.getOtherUserName(), Toast.LENGTH_SHORT);
                         toast.show();
 
                         // Ensures changes occurred
@@ -214,7 +208,7 @@ public class ProfileFragment extends Fragment {
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully deleted!");
 
-                        Toast toast = Toast.makeText(getActivity(), "Unfollowed " + SPH.getOtherEmail(), Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(getActivity(), "Unfollowed " + SPH.getOtherUserName(), Toast.LENGTH_SHORT);
                         toast.show();
 
                         // Ensures changes occurred
@@ -230,8 +224,6 @@ public class ProfileFragment extends Fragment {
     }
 
     public void CheckIfFollowed(){
-        // WHEN LOGGING IN WORKS AGAIN, SWITCH "Test" WITH ACTUAL USERNAME/EMAIL
-
         db.collection("Followers")
                 .whereEqualTo("Following", SPH.getOtherEmail())
                 .whereEqualTo("User", SPH.getEmail())
