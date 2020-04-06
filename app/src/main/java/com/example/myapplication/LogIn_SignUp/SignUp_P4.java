@@ -61,8 +61,6 @@ public class SignUp_P4 extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                saveProfile();
-                cleanSharedPreferences();
                 generateProfile();
             }
         });
@@ -101,6 +99,7 @@ public class SignUp_P4 extends AppCompatActivity {
         docData.put("Security_Q", profile.getSecurityQuestion());
         docData.put("Security_QA", profile.getSecurityQuestionAnswer());
         docData.put("Image", "uhh filename goes here(?)");
+        docData.put("ImageCount", "1");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -134,7 +133,7 @@ public class SignUp_P4 extends AppCompatActivity {
 
 
     void goToTimeLine(){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, LogIn_SignUp_Main.class);
         startActivity(intent);
     }
 
@@ -161,19 +160,6 @@ public class SignUp_P4 extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
-    }
-
-
-    void saveProfile(){
-
-
-    }
-
-
-    void cleanSharedPreferences(){
-
-
 
     }
 

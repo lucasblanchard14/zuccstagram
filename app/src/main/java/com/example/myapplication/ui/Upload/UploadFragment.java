@@ -1,35 +1,15 @@
 package com.example.myapplication.ui.Upload;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.ContentResolver;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.IntentSender;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.database.DatabaseErrorHandler;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.UserHandle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,20 +23,18 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.myapplication.LogIn_SignUp.SharedPreferenceHelper;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -79,6 +57,7 @@ public class UploadFragment extends Fragment {
     Button uploadButton;
     StorageReference storageReference;
     String currentPhotoPath;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -112,6 +91,9 @@ public class UploadFragment extends Fragment {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(imageUri == null || description.getText().toString() == null){
+                    return;
+                }
                 descriptionFinal = description.getText().toString();
                 uploadPost();
                 uploadCloudImage();
@@ -156,6 +138,7 @@ public class UploadFragment extends Fragment {
                 Uri photoURI = FileProvider.getUriForFile(getActivity(),
                         "com.example.android.fileprovider",
                         photoFile);
+                imageUri =photoURI;
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
@@ -184,20 +167,19 @@ public class UploadFragment extends Fragment {
             }
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {// not sure
             Bundle extras = data.getExtras();
-            imageUri = data.getData();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageView.setImageBitmap(imageBitmap);
+            imageView.setImageURI(imageUri);
         }
     }
 
     void uploadPost() {
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(getActivity().getApplicationContext());
         Map<String, Object> docData = new HashMap<>();
         docData.put("Description", descriptionFinal);
         docData.put("Image", "TBD, filename goes here");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("Posts").document("test")
+        db.collection("Posts").document(SPH.getEmail() + "_" + SPH.getImageCount())
                 .set(docData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -217,7 +199,18 @@ public class UploadFragment extends Fragment {
     }
     // code to upload image to cloud
     private void uploadCloudImage() {
-        StorageReference postsRef = storageReference.child("images/posts.jpg");
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(getActivity().getApplicationContext());
+        StorageReference postsRef = storageReference.child("Images/" + SPH.getEmail() + "/" + SPH.getImageCount() + ".jpg");
+        //following increments the Image in database
+        DocumentReference noteRef = db.collection("Users").document(SPH.getEmail());
+        int imgCnt;
+        if (!TextUtils.isEmpty(SPH.getImageCount()) && TextUtils.isDigitsOnly(SPH.getImageCount())) {
+            imgCnt= Integer.parseInt(SPH.getImageCount());
+        } else {
+            imgCnt = 0;
+        }
+        imgCnt++;
+        noteRef.update("ImageCount", Integer.toString(imgCnt));
 
         postsRef.putFile(imageUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

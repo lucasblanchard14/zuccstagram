@@ -94,7 +94,7 @@ public class SharedPreferenceHelper {
                         editor.putString("editText_UserName", document.get("Username").toString());
                         editor.putString("currentProfilePictureID", document.get("Image").toString());
                         editor.putString("ImageCount", document.get("ImageCount").toString());
-
+                        editor.commit();
 
                     }
                     else{
