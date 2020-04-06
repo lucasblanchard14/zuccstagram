@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -68,7 +69,12 @@ public class UploadFragment extends Fragment {
         uploadViewModel =
                 ViewModelProviders.of(this).get(UploadViewModel.class);
         View root = inflater.inflate(R.layout.fragment_upload, container, false);
-
+        final Toast uploadFail = Toast.makeText(getActivity().getApplicationContext(),
+                "Error, select a picture before uploading",
+                Toast.LENGTH_LONG);
+        final Toast uploadSuccess = Toast.makeText(getActivity().getApplicationContext(),
+                "Post uploaded",
+                Toast.LENGTH_LONG);
         description = root.findViewById(R.id.description);
         imageView = root.findViewById(R.id.imageView);
         cameraButton = root.findViewById(R.id.cameraButton);
@@ -92,12 +98,13 @@ public class UploadFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(imageUri == null || description.getText().toString() == null){
+                    uploadFail.show();
                     return;
                 }
                 descriptionFinal = description.getText().toString();
                 uploadPost();
                 uploadCloudImage();
-
+                uploadSuccess.show();
             }
         });
 
@@ -173,9 +180,11 @@ public class UploadFragment extends Fragment {
 
     void uploadPost() {
         SharedPreferenceHelper SPH = new SharedPreferenceHelper(getActivity().getApplicationContext());
+        SPH.fetchProfile();
         Map<String, Object> docData = new HashMap<>();
         docData.put("Description", descriptionFinal);
-        docData.put("Image", "TBD, filename goes here");
+        docData.put("ImageID", SPH.getImageCount());
+        docData.put("User", SPH.getEmail());
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -200,6 +209,7 @@ public class UploadFragment extends Fragment {
     // code to upload image to cloud
     private void uploadCloudImage() {
         SharedPreferenceHelper SPH = new SharedPreferenceHelper(getActivity().getApplicationContext());
+        SPH.fetchProfile();
         StorageReference postsRef = storageReference.child("Images/" + SPH.getEmail() + "/" + SPH.getImageCount() + ".jpg");
         //following increments the Image in database
         DocumentReference noteRef = db.collection("Users").document(SPH.getEmail());

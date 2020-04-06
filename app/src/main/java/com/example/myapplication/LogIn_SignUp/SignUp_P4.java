@@ -99,7 +99,7 @@ public class SignUp_P4 extends AppCompatActivity {
         docData.put("Security_Q", profile.getSecurityQuestion());
         docData.put("Security_QA", profile.getSecurityQuestionAnswer());
         docData.put("Image", "uhh filename goes here(?)");
-        docData.put("ImageCount", "1");
+        docData.put("ImageCount", "0");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
