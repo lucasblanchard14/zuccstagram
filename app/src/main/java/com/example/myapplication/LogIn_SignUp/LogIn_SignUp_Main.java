@@ -109,7 +109,8 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
                                 document.get("Security_Q").toString(),
                                 document.get("Security_QA").toString(),
                                 document.get("Username").toString(),
-                                document.get("Image").toString()
+                                document.get("Image").toString(),
+                                document.get("ImageCount").toString()
                         };
                         SPH.fetchProfile(data);
                         goToTimeLine();

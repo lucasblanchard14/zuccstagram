@@ -122,7 +122,7 @@ public class SharedPreferenceHelper {
         editor.putString("editText_SecurityQuestionAnswer", data[5]);
         editor.putString("editText_UserName", data[6]);
         editor.putString("currentProfilePictureID", data[7]);
-        //editor.putString("ImageCount", document.get("ImageCount").toString());
+        editor.putString("ImageCount", data[8]);
         editor.commit();
 
         switchToProfile();
