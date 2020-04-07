@@ -80,38 +80,6 @@ public class SharedPreferenceHelper {
 
     }
 
-    /*public void fetchProfile(String[] data){
-        db.collection("Users").document(getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
-                        editor.putString("editText_FirstName", document.get("First_Name").toString());
-                        editor.putString("editText_LastName", document.get("Last_Name").toString());
-                        editor.putString("editText_Bio", document.get("Bio").toString());
-                        editor.putString("editText_Password", document.get("Password").toString());
-                        editor.putString("editText_SecurityQuestion", document.get("Security_Q").toString());
-                        editor.putString("editText_SecurityQuestionAnswer", document.get("Security_QA").toString());
-                        editor.putString("editText_UserName", document.get("Username").toString());
-                        editor.putString("currentProfilePictureID", document.get("Image").toString());
-                        //editor.putString("ImageCount", document.get("ImageCount").toString());
-                        editor.commit();
-
-
-                    }
-                    else{
-                        Log.d(TAG, "No documents: ");
-                    }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
-            }
-        });
-
-    }*/
-
     public void fetchProfile(String[] data){
         SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
         editor.putString("editText_FirstName", data[0]);
@@ -128,34 +96,6 @@ public class SharedPreferenceHelper {
         switchToProfile();
 
     }
-
-
-    /*public String fetchImageData(String fn){
-        // Profile Pic
-        String encodedImage = null;
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-
-        // Get image location
-        String filename = "gs://zuccstragram.appspot.com/Images/User_Profile/" + fn;
-        StorageReference gsReference = storage.getReferenceFromUrl(filename);
-
-
-        final long ONE_MEGABYTE = 1024 * 1024;
-        gsReference.getBytes(ONE_MEGABYTE*4).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                String encodedImage = Base64.encodeToString(bytes, Base64.DEFAULT);
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-
-        return encodedImage;
-    }*/
 
     //Get function P1
 

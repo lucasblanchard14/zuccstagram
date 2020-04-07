@@ -22,6 +22,7 @@ public class Profile {
 
     //P4
     private Uri profileImage;
+    private String ImageCount;
 
 
 
@@ -47,6 +48,7 @@ public class Profile {
 
         //P4
         profileImage = null;
+        ImageCount = null;
     }
 
     public String getFirstName() {
@@ -115,6 +117,9 @@ public class Profile {
 
     public Uri getProfileImage() {
         return profileImage;
+    }
+    public String getImageCount() {
+        return ImageCount;
     }
 
     public void setProfileImage(Uri profileImage) {
