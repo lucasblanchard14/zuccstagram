@@ -118,11 +118,13 @@ public class SignUp_P1 extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
+                    SharedPreferenceHelper SPH = new SharedPreferenceHelper(getApplicationContext());
                     if (document.exists()) {
-                        Log.d(TAG, "Document exists!");
-                        result[0] = true;
+                        SPH.emailVerification(true);
+                        Log.d(TAG, "Document exists!    " + true);
                     } else {
                         Log.d(TAG, "Document does not exist!");
+                        SPH.emailVerification(false);
                         result[0] = false;
                     }
                 } else {
@@ -130,7 +132,9 @@ public class SignUp_P1 extends AppCompatActivity {
                 }
             }
         });
-        return result[0];
+
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(getApplicationContext());
+        return Boolean.parseBoolean(SPH.getEmailVerification());
     }
 
     public boolean confirmationCheckUp(){

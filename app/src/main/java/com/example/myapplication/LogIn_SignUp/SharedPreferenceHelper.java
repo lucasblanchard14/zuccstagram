@@ -71,8 +71,10 @@ public class SharedPreferenceHelper {
 
     }
 
-    public void saveProfileSettings_P4(String FullName, String Age, String StudentID) {
-        //TODO find a way to save a picture, temporarily
+    public void emailVerification(boolean Email) {
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        editor.putString("emailVerification", String.valueOf(Email));
+        editor.commit();
 
     }
 
@@ -158,6 +160,9 @@ public class SharedPreferenceHelper {
         return sharedPreferences_Profile.getString("editText_ConfirmationPassword", null);
     }
 
+    public String getEmailVerification() {
+        return sharedPreferences_Profile.getString("emailVerification", null);
+    }
 
     public String getImageCount() {
         return sharedPreferences_Profile.getString("ImageCount", null);
