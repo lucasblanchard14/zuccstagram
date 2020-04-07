@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.example.myapplication.LogIn_SignUp.SharedPreferenceHelper;
 import com.example.myapplication.R;
 import com.example.myapplication.R.layout;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,6 +30,11 @@ public class CommentDialog extends AppCompatDialogFragment {
     private TextView d_username;
     private EditText d_comment;
     private CommentDialogListener listener;
+    private String id;
+
+    public CommentDialog (String post){
+        id = post;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -56,8 +62,11 @@ public class CommentDialog extends AppCompatDialogFragment {
                     }
                 });
 
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(getActivity());
+
         d_comment = view.findViewById(R.id.dialog_comment);
         d_username = view.findViewById(R.id.dialog_username);
+        d_username.setText(SPH.getUserName());
 
 
         return builder.create();
@@ -80,14 +89,14 @@ public class CommentDialog extends AppCompatDialogFragment {
     public void uploadComment(String username, String content){
         Map<String, Object> docData = new HashMap<>();
         Timestamp ts = new Timestamp(new Date());
-        docData.put("Comment", "TestPostID|"+ts.getSeconds());
-        docData.put("Post", "TestPostID");
+        docData.put("Comment", id+"|"+ts.getSeconds());
+        docData.put("Post", id);
         docData.put("User", username);
         docData.put("Text", content);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("Comments").document("TestPostID|"+ts.getSeconds())
+        db.collection("Comments").document(id+"|"+ts.getSeconds())
                 .set(docData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

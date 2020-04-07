@@ -55,13 +55,6 @@ public class ProfileFragment extends Fragment {
     private TextView username;
     private ImageView pfp;
 
-
-
-    // PLACEHOLDERS
-    //private String user = "test@test.com";
-    //private String visiting = "account1@test.com";
-
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         profileViewModel =
@@ -77,9 +70,6 @@ public class ProfileFragment extends Fragment {
         pfp = root.findViewById(R.id.imageView);
         fb = root.findViewById(R.id.followButton);
 
-        //loadProfile();
-
-        ////
 
         return root;
     }
@@ -88,12 +78,6 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadProfile();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        SPH.switchToProfile();
     }
 
     public void loadProfile(){
@@ -137,8 +121,6 @@ public class ProfileFragment extends Fragment {
                 // Handle any errors
             }
         });
-
-        int j = 0;
 
         //gs://zuccstragram.appspot.com/Images/User_Profile/test_pfp.png
 

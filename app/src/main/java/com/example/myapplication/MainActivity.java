@@ -104,15 +104,12 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed(){
         SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
 
-        //TODO: BRING USER BACK TO THEIR PAGE ON BACK PRESS
-
         // If the user is looking at someone else's page, bring them back to theirs
         if(!SPH.isOnYourProfile())
             SPH.switchToProfile();
 
+        finish();
+        startActivity(getIntent());
 
-
-        //ProfileFragment fragment = (ProfileFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_profile);
-        //fragment.loadProfile();
     }
 }
