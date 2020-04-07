@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.Settings.EditProfile">
+
+
+    <include
+
+        android:id="@+id/toolbar_Settings"
+        layout="@layout/toolbar_setting" />
+
+    <Button
+        android:id="@+id/saveButton_EP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/saveButton_EP"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView_EP"
+        android:layout_width="match_parent"
+        android:layout_height="517dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_Settings">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image_EP"
+                android:layout_width="189dp"
+                android:layout_height="178dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="40dp"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="2dp" />
+
+            <Button
+                android:id="@+id/uploadButton_EP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="140dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/uploadButton_P4" />
+
+            <TextView
+                android:id="@+id/textView_FirstName_EP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/textView_FirstName_P1"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/editText_FirstName_EP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="@string/editText_hint_FirstName_P1"
+                android:inputType="textPersonName"
+                android:text="@string/editText_FirstName_P1" />
+
+            <TextView
+                android:id="@+id/textView_LastName_EP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/textView_LastName_P1" />
+
+            <EditText
+                android:id="@+id/editText_LastName_EP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="@string/editText_hint_LastName_P1"
+                android:inputType="textPersonName"
+                android:text="@string/editText_LastName_P1" />
+
+            <TextView
+                android:id="@+id/textView_UserName_EP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/textView_UserName_P2" />
+
+            <EditText
+                android:id="@+id/editText_UserName_EP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="@string/editText_hint_UserName_P2"
+                android:inputType="textPersonName"
+                android:text="@string/editText_UserName_P2" />
+
+            <TextView
+                android:id="@+id/textView_Bio_EP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/textView_Bio_P2" />
+
+            <EditText
+                android:id="@+id/editText_Bio_EP"
+                android:layout_width="216dp"
+                android:layout_height="75dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="@string/editText_hint_Bio_P2"
+                android:inputType="textPersonName"
+                android:text="@string/editText_Bio_P2" />
+
+
+            <TextView
+                android:id="@+id/textView_Password_EP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/textView_Password_P2" />
+
+            <EditText
+                android:id="@+id/editText_Password_EP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="@string/editText_hint_Password_P2"
+                android:inputType="textPassword"
+                android:text="@string/editText_Password_P2" />
+
+
+            <TextView
+                android:id="@+id/textView_Password_Confirmation_EP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/textView_Password_Confirmation_P2" />
+
+
+            <EditText
+                android:id="@+id/editText_Password_Confirmation_EP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="@string/editText_hint_Password_Confirmation_P2"
+                android:inputType="textPassword"
+                android:text="@string/editText_Password_Confirmation_P2" />
+
+
+            <TextView
+                android:id="@+id/textView_SecurityQuestion_EP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/textView_SecurityQuestion_P3" />
+
+            <EditText
+                android:id="@+id/editText_SecurityQuestion_EP"
+                android:layout_width="326dp"
+                android:layout_height="62dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="@string/editText_hint_SecurityQuestion_P3"
+                android:inputType="textPersonName"
+                android:text="@string/editText_SecurityQuestion_P3" />
+
+            <TextView
+                android:id="@+id/textView_SecurityQuestionAnswer_EP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/textView_SecurityQuestion_Answer_P3" />
+
+            <EditText
+                android:id="@+id/editText_SecurityQuestionAnswer_EP"
+                android:layout_width="326dp"
+                android:layout_height="75dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/editText_SecurityQuestion_Answer_P3" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
