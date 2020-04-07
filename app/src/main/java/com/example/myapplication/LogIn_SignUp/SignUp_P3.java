@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 
@@ -32,8 +33,10 @@ public class SignUp_P3 extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                saveP3();
-                goToSignUp_P4();
+                if(confirmationCheckUp()){
+                    saveP3();
+                    goToSignUp_P4();
+                }
             }
         });
     }
@@ -86,7 +89,20 @@ public class SignUp_P3 extends AppCompatActivity {
 
     }
 
+    public boolean confirmationCheckUp(){
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
+        if (editText_SecurityQuestion.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_SecurityQuestion), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(editText_SecurityQuestionAnswer.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_SecurityQuestionAnswer), Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
+
+        return  true;
+    }
 
 
 

@@ -179,7 +179,8 @@
     <string name="wrong_FirstName">Invalid First Name</string>
     <string name="wrong_LastName">Invalid Last Name</string>
     <string name="wrong_Username">Invalid Username</string>
-    <string name="invalid_Email">This email has already been used. Please enter a new one.</string>
+    <string name="invalid_Email">Invalid Email</string>
+    <string name="used_Email">This email has already been used. Please enter a new one.</string>
     <string name="wrong_ConfirmationEmail">Incorrect Confirmation Email</string>
     <string name="wrong_Password">Invalid or Already In Used Password. 8 Characters Minimum</string>
     <string name="wrong_ConfirmationPassword">Invalid Confirmation Password</string>

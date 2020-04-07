@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 
@@ -34,8 +35,10 @@ public class SignUp_P2 extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                saveP2();
-                goToSignUp_P3();
+                if(confirmationCheckUp()){
+                    saveP2();
+                    goToSignUp_P3();
+                }
             }
         });
 
@@ -95,7 +98,26 @@ public class SignUp_P2 extends AppCompatActivity {
 
     }
 
-
+    public boolean confirmationCheckUp(){
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
+        if (editText_UserName.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_Username), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(editText_Bio.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_Bio), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(editText_Password.getText().toString().isEmpty() || editText_Password.getText().toString().length() < 8 || editText_Password.getText().toString().contentEquals(SPH.getPassword())){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_Password), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else  if(!editText_Password.getText().toString().contentEquals(editText_Confirmation_Password.getText().toString()) || editText_Confirmation_Password.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_ConfirmationPassword), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return  true;
+    }
 
 
 
