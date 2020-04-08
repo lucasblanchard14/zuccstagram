@@ -1,43 +1,48 @@
 package com.example.myapplication.ui.Search;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.appcompat.widget.Toolbar;
 
+import com.example.myapplication.LogIn_SignUp.SharedPreferenceHelper;
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
-import com.example.myapplication.ui.Notifications.NotificationsViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Date;
-
 public class SearchFragment extends AppCompatActivity {
 
     //private SearchViewModel searchViewModel;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "SearchFragment";
+    private SharedPreferenceHelper SPH;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_search);
+
+        context = this;
+        SPH = new SharedPreferenceHelper(this);
+
+        toolbarSetUp();
 
         final LinearLayout ll = (LinearLayout) findViewById(R.id.searchTable);
         //
@@ -55,20 +60,24 @@ public class SearchFragment extends AppCompatActivity {
             }
         });
 
+
     }
 
-
+    void toolbarSetUp(){
+        Toolbar toolbar = findViewById(R.id.toolbar_Search);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Search List");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
     public void UpdateList(String s, final LinearLayout ll){
         // Clear table
         ll.removeAllViews();
-        //
 
         // Don't bother if search is empty
         if(s.isEmpty())
             return;
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Users")
                 .whereGreaterThanOrEqualTo("Username", s).whereLessThanOrEqualTo("Username", s + '\uf8ff')
                 .get()
@@ -113,8 +122,43 @@ public class SearchFragment extends AppCompatActivity {
         ll.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT));
     }
 
-    void openProfile(String user){
-        Toast toast = Toast.makeText(this, "OPEN ACCOUNT: " + user, Toast.LENGTH_SHORT);
-        toast.show();
+    void openProfile(final String email){
+        // Are we trying to open our own profile?
+        if(email.equals(SPH.getEmail())){
+            SPH.switchToProfile();
+            Intent intent = new Intent(context, MainActivity.class);
+            startActivity(intent);
+        }
+        else{
+            db.collection("Users").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            SharedPreferenceHelper SPH = new SharedPreferenceHelper(context);
+
+                            String[] data = {document.get("First_Name").toString(),
+                                    document.get("Last_Name").toString(),
+                                    document.get("Bio").toString(),
+                                    document.get("Username").toString(),
+                                    document.get("Image").toString(),
+                                    email
+                            };
+
+                            SPH.fetchOthersProfile(data);
+                            Intent intent = new Intent(context, MainActivity.class);
+                            startActivity(intent);
+                        }
+                        else{
+                            Log.d(TAG, "No documents: ");
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                }
+            });
+        }
+
     }
 }

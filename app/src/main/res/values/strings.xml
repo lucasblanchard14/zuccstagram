@@ -6,6 +6,7 @@
 
     <string name="app_name">Zuccstagram_SignUp</string>
     <string name="sharedPreferences_Profile">sharedPreferences_Profile</string>
+    <string name="sharedPreferences_Other">sharedPreferences_Other</string>
 
     <string name="logInButton">Log In</string>
     <string name="signUpButton">Sign Up</string>
@@ -172,5 +173,6 @@
     <string name="key_vibrate">key_vibrate</string>
     <string name="key_send_feedback">key_send_feedback</string>
     <string name="saveButton_EP">SAVE</string>
+    <string name="navigation_following">Following</string>
 
 </resources>

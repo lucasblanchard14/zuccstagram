@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -23,11 +26,17 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
     EditText editText_Password;
     Button signUpButton;
     Button logInButton;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private Context context;
+
+    private String TAG = "LogIn_SignUp_Main";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in__sign_up__main);
+
+        context = this;
 
         toolbarSetUp();
         setUpUI();
@@ -49,16 +58,9 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
             }
         });
 
-
-
-
     }
 
-
-
     void ValidateLogIn(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         db.collection("Users")
                 .whereEqualTo("Email", editText_Email.getText().toString())
                 .whereEqualTo("Password", editText_Password.getText().toString())
@@ -71,10 +73,8 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
                             if(task.getResult().size() > 0){
                                 SharedPreferenceHelper SPH = new SharedPreferenceHelper(getApplicationContext());
                                 SPH.saveProfileSettings_Login(editText_Email.getText().toString(), editText_Password.getText().toString());
-                                SPH.fetchProfile();
+                                fetchProfile();
                                 Log.d("MainActivity", "Login Successful.");
-								// THIS IS WHEN WE JUMP TO
-                                goToTimeLine();
                             }
                             // User not found
                             else{
@@ -88,13 +88,43 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
                 });
     }
 
+    void fetchProfile(){
+        db.collection("Users").document(editText_Email.getText().toString()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        SharedPreferenceHelper SPH = new SharedPreferenceHelper(context);
 
+                        String[] data = {document.get("First_Name").toString(),
+                                document.get("Last_Name").toString(),
+                                document.get("Bio").toString(),
+                                document.get("Password").toString(),
+                                document.get("Security_Q").toString(),
+                                document.get("Security_QA").toString(),
+                                document.get("Username").toString(),
+                                document.get("Image").toString(),
+                                document.get("ImageCount").toString()
+                        };
+                        SPH.fetchProfile(data);
+                        goToTimeLine();
+                    }
+                    else{
+                        Log.d(TAG, "No documents: ");
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
 
 
     void toolbarSetUp(){
         Toolbar toolbar = findViewById(R.id.toolbar_LogIn_SignUp);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+        // getSupportActionBar().setTitle("");
 
     }
     void setUpUI(){
