@@ -83,7 +83,7 @@ public class EditProfile extends AppCompatActivity {
     //private String tempProfilePictureID = UUID.randomUUID().toString();
   
     //private String currentProfilePictureID;
-    //private Context context;
+    private Context context;
 
 
 
@@ -133,6 +133,7 @@ public class EditProfile extends AppCompatActivity {
         Intent intent = new Intent(this, Setting.class);
         startActivity(intent);
     }
+    
     public void updateSharedPreferences(){
         SharedPreferenceHelper SPH1 = new SharedPreferenceHelper(this);
         db.collection("Users").document(SPH1.getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -150,7 +151,6 @@ public class EditProfile extends AppCompatActivity {
                                 document.get("Security_Q").toString(),
                                 document.get("Security_QA").toString(),
                                 document.get("Username").toString(),
-                                document.get("Image").toString(),
                                 document.get("ImageCount").toString()
                         };
                         SPH2.fetchProfile(data);
