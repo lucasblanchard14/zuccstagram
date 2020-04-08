@@ -25,6 +25,9 @@
             android:name=".ui.Search.SearchFragment"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".ui.Following.FollowingActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".ui.Settings.AdvanceSettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".ui.Settings.Setting" />

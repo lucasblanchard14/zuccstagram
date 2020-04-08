@@ -58,12 +58,7 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
             }
         });
 
-
-
-
     }
-
-
 
     void ValidateLogIn(){
         db.collection("Users")
@@ -129,7 +124,7 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
     void toolbarSetUp(){
         Toolbar toolbar = findViewById(R.id.toolbar_LogIn_SignUp);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+        // getSupportActionBar().setTitle("");
 
     }
     void setUpUI(){

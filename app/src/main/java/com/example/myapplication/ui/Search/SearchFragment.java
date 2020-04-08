@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.myapplication.LogIn_SignUp.SharedPreferenceHelper;
 import com.example.myapplication.MainActivity;
@@ -41,6 +42,8 @@ public class SearchFragment extends AppCompatActivity {
         context = this;
         SPH = new SharedPreferenceHelper(this);
 
+        toolbarSetUp();
+
         final LinearLayout ll = (LinearLayout) findViewById(R.id.searchTable);
         //
         SearchView sv = findViewById(R.id.searchView);
@@ -57,9 +60,15 @@ public class SearchFragment extends AppCompatActivity {
             }
         });
 
+
     }
 
-
+    void toolbarSetUp(){
+        Toolbar toolbar = findViewById(R.id.toolbar_Search);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Search List");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
     public void UpdateList(String s, final LinearLayout ll){
         // Clear table
@@ -69,7 +78,6 @@ public class SearchFragment extends AppCompatActivity {
         if(s.isEmpty())
             return;
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Users")
                 .whereGreaterThanOrEqualTo("Username", s).whereLessThanOrEqualTo("Username", s + '\uf8ff')
                 .get()

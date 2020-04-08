@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -18,7 +17,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.myapplication.LogIn_SignUp.LogIn_SignUp_Main;
 import com.example.myapplication.LogIn_SignUp.SharedPreferenceHelper;
-import com.example.myapplication.ui.Profile.ProfileFragment;
+import com.example.myapplication.ui.Following.FollowingActivity;
 import com.example.myapplication.ui.Search.SearchFragment;
 import com.example.myapplication.ui.Settings.Setting;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -50,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.navigation_notifications:
                 //TODO
                 goToSearch();
+                return true;
+            case R.id.navigation_following:
+                //TODO
+                goToFollowing();
                 return true;
 
             default:
@@ -94,9 +97,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LogIn_SignUp_Main.class);
         startActivity(intent);
     }
-
     void goToSearch(){
         Intent intent = new Intent(this, SearchFragment.class);
+        startActivity(intent);
+    }
+    void goToFollowing(){
+        Intent intent = new Intent(this, FollowingActivity.class);
         startActivity(intent);
     }
 
