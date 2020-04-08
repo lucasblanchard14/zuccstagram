@@ -52,8 +52,16 @@ public class PostsFragment extends Fragment {
                 ViewModelProviders.of(this).get(PostsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_posts, container, false);
 
-        final TableLayout tl = (TableLayout) root.findViewById(R.id.postTable);
+        TableLayout tl = (TableLayout) root.findViewById(R.id.postTable);
         SPH = new SharedPreferenceHelper(getActivity());
+
+        makeTable(tl);
+
+        return root;
+    }
+
+    public void makeNewTable(){
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
 
         // Fetch values based on who's page is being viewed
         if(SPH.isOnYourProfile()){
@@ -78,17 +86,25 @@ public class PostsFragment extends Fragment {
                             if(task.getResult().size() == 0)
                                 return;
 
-
                             // Add scale for dp measurements
                             final float dpScale = getContext().getResources().getDisplayMetrics().density;
                             TableRow tr = null;
                             int count = 0;
 
                             for (final QueryDocumentSnapshot document : task.getResult()) {
+
+
+                                //View view =
+
+
+                                ////////
+
+
+
                                 // New row
                                 if(count % 3 == 0){
                                     tr = new TableRow(getActivity());
-                                    TableRow.LayoutParams trParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+                                    TableRow.LayoutParams trParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
                                     tr.setLayoutParams(trParams);
                                 }
 
@@ -100,8 +116,14 @@ public class PostsFragment extends Fragment {
 
                                 // Create an imageview for this post
                                 final ImageView iv = new ImageView(getActivity());
-                                TableRow.LayoutParams ivParams = new TableRow.LayoutParams((int) (125 * dpScale + 0.5f), (int) (125 * dpScale + 0.5f),1.0f);
+
+
+                                TableRow.LayoutParams ivParams = new TableRow.LayoutParams((int) (125 * dpScale + 0.5f), TableRow.LayoutParams.WRAP_CONTENT);
+                                //TableRow.LayoutParams ivParams = new TableRow.LayoutParams((int) (125 * dpScale + 0.5f), (int) (125 * dpScale + 0.5f),1.0f);
                                 ivParams.setMargins(5,5,5,5);
+                                iv.setLayoutParams(ivParams);
+                                //iv.setAdjustViewBounds(true);
+                                iv.setMaxHeight((int) (125 * dpScale + 0.5f));
 
                                 // Fetch image and set it into imageview
                                 final long ONE_MEGABYTE = 1024 * 1024;
@@ -125,29 +147,125 @@ public class PostsFragment extends Fragment {
                                     }
                                 });
 
-                                iv.setLayoutParams(ivParams);
+
                                 tr.addView(iv);
+
 
                                 // This is the last image on row
                                 if(count % 3 == 2){
-                                    tl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT));
+                                    Log.d(TAG, "ROW IS FULL, ADDING IT", task.getException());
+                                    //tl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
                                 }
 
                                 count++;
                             }
 
                             // We ended and it's not even on the 3rd image
-                            if(count % 3 != 2){
-                                tl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT));
+                            if(count % 3 != 0){
+                                //tl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
                             }
+
 
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+    }
 
-        return root;
+    public void makeTable(final TableLayout tl){
+        // Fetch values based on who's page is being viewed
+        if(SPH.isOnYourProfile()){
+            email = SPH.getEmail();
+            username = SPH.getUserName();
+        }
+        else{
+            email = SPH.getOtherEmail();
+            username = SPH.getOtherUserName();
+        }
+
+        db.collection("Posts")
+                //.orderBy("Timestamp", Query.Direction.DESCENDING)
+                .whereEqualTo("User", email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            // If there's no posts made yet, just leave
+                            if(task.getResult().size() == 0)
+                                return;
+
+                            // Add scale for dp measurements
+                            final float dpScale = getContext().getResources().getDisplayMetrics().density;
+                            TableRow tr = null;
+                            int count = 0;
+
+                            for (final QueryDocumentSnapshot document : task.getResult()) {
+                                // New row
+                                if(count % 3 == 0){
+                                    tr = new TableRow(getActivity());
+                                    TableRow.LayoutParams trParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+                                    tr.setLayoutParams(trParams);
+                                }
+
+                                // Fetch image
+                                // Get image location
+                                String filename = "gs://zuccstragram.appspot.com/Images/"+document.get("User")+"/" + document.get("ImageID")+".jpg";
+                                Log.d(TAG, document.getId() + " => " + document.getData() + " | " + filename);
+                                StorageReference gsReference = storage.getReferenceFromUrl(filename);
+
+                                // Create an imageview for this post
+                                final ImageView iv = new ImageView(getActivity());
+
+                                TableRow.LayoutParams ivParams = new TableRow.LayoutParams((int) (125 * dpScale + 0.5f), (int) (125 * dpScale + 0.5f),1.0f);
+                                ivParams.setMargins(5,5,5,5);
+                                iv.setLayoutParams(ivParams);
+
+                                // Fetch image and set it into imageview
+                                final long ONE_MEGABYTE = 1024 * 1024;
+                                gsReference.getBytes(ONE_MEGABYTE*4).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                    @Override
+                                    public void onSuccess(final byte[] bytes) {
+                                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                        iv.setImageBitmap(bmp);
+
+                                        iv.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                openPost(username, document.getId(), bytes, document.get("Description").toString());
+                                            }
+                                        });
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        // Handle any errors
+                                    }
+                                });
+                                tr.addView(iv);
+
+                                // This is the last image on row
+                                if(count % 3 == 2){
+                                    Log.d(TAG, "ROW IS FULL, ADDING IT", task.getException());
+                                    tl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                                }
+
+                                count++;
+                            }
+
+                            // We ended and it's not even on the 3rd image
+                            if(count % 3 != 0){
+                                tl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                            }
+
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
     public void openPost(String user, String postID, byte[] image, String desc){
