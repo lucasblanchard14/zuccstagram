@@ -27,6 +27,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -74,11 +76,11 @@ public class EditProfile extends AppCompatActivity {
     private static final String KEY_Security_Q = "Security_Q";
     private static final String KEY_Security_QA = "Security_QA";
     private static final String KEY_Username = "Username";
-    private static final String KEY_Email = "Image";
-    private static final String KEY_ProfileImage = "Image";
+    private static final String KEY_Email = "Email";
+    private static final String KEY_ProfileImage = "Profile_Picture";
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     //private String tempProfilePictureID = UUID.randomUUID().toString();
-    private String currentProfilePictureID;
+
 
 
 
@@ -107,11 +109,13 @@ public class EditProfile extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                uploadImage();
-                updateProfile();
-                updateSharedPreferences();
-                goToSetting();
-                //deleteCurrentProfilePicture();
+                if(confirmationCheckUp()){
+                    uploadImage();
+                    updateProfile();
+                    updateSharedPreferences();
+                    goToSetting();
+                    //deleteCurrentProfilePicture();
+                }
             }
         });
 
@@ -140,8 +144,19 @@ public class EditProfile extends AppCompatActivity {
         noteRef.update(KEY_Username, editText_UserName.getText().toString());
         noteRef.update(KEY_Security_Q, editText_SecurityQuestion.getText().toString());
         noteRef.update(KEY_Security_QA, editText_SecurityQuestionAnswer.getText().toString());
-        noteRef.update(KEY_ProfileImage, currentProfilePictureID);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String newPassword = editText_Password.getText().toString();
+
+        user.updatePassword(newPassword)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User password updated.");
+                        }
+                    }
+                });
 
 
     }
@@ -164,7 +179,7 @@ public class EditProfile extends AppCompatActivity {
 
                         // Get image location
 
-                        String filename = "gs://zuccstragram.appspot.com/Images/User_Profile/" + document.get(KEY_Email).toString() + document.get(KEY_ProfileImage).toString();
+                        String filename = "gs://zuccstragram.appspot.com/Images/" + document.get(KEY_Email).toString() + "/" + KEY_ProfileImage;
                         StorageReference gsReference = storage.getReferenceFromUrl(filename);
 
 
@@ -183,15 +198,16 @@ public class EditProfile extends AppCompatActivity {
                         });
 
 
+                        SharedPreferenceHelper SPH = new SharedPreferenceHelper(getApplicationContext());
 
                         editText_FirstName.setText(document.get("First_Name").toString());
                         editText_LastName.setText(document.get("Last_Name").toString());
                         editText_Bio.setText(document.get("Bio").toString());
-                        editText_Password.setText(document.get("Password").toString());
+                        editText_Password.setText(SPH.getPassword());
                         editText_SecurityQuestion.setText(document.get("Security_Q").toString());
                         editText_SecurityQuestionAnswer.setText(document.get("Security_QA").toString());
                         editText_UserName.setText(document.get("Username").toString());
-                        currentProfilePictureID = document.get("Image").toString();
+
 
                     }
                     else{
@@ -264,7 +280,8 @@ public class EditProfile extends AppCompatActivity {
 
     private void uploadImage()
     {
-        storageReference = FirebaseStorage.getInstance().getReference();
+
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
         if (imageUri != null) {
 
             // Code for showing progressDialog while uploading
@@ -276,7 +293,7 @@ public class EditProfile extends AppCompatActivity {
             // Defining the child of storageReference
 
 
-            String filename = "gs://zuccstragram.appspot.com/Images/User_Profile/" + currentProfilePictureID;
+            String filename = "gs://zuccstragram.appspot.com/Images/" + SPH.getEmail()+ "/" + KEY_ProfileImage;
             StorageReference gsReference = storage.getReferenceFromUrl(filename);
 
 
@@ -289,12 +306,12 @@ public class EditProfile extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
                         {
 
-                         // Image uploaded successfully
-                         // Dismiss dialog
+                            // Image uploaded successfully
+                            // Dismiss dialog
                             progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "image Uploaded", Toast.LENGTH_SHORT).show();
-                            }
-                        })
+                        }
+                    })
 
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -308,21 +325,21 @@ public class EditProfile extends AppCompatActivity {
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
 
-                                // Progress Listener for loading
-                                // percentage on the dialog box
-                                @Override
-                                public void onProgress(
-                                        UploadTask.TaskSnapshot taskSnapshot)
-                                {
-                                    double progress
-                                            = (100.0
-                                            * taskSnapshot.getBytesTransferred()
-                                            / taskSnapshot.getTotalByteCount());
-                                    progressDialog.setMessage(
-                                            "Uploaded "
-                                                    + (int)progress + "%");
-                                }
-                            });
+                        // Progress Listener for loading
+                        // percentage on the dialog box
+                        @Override
+                        public void onProgress(
+                                UploadTask.TaskSnapshot taskSnapshot)
+                        {
+                            double progress
+                                    = (100.0
+                                    * taskSnapshot.getBytesTransferred()
+                                    / taskSnapshot.getTotalByteCount());
+                            progressDialog.setMessage(
+                                    "Uploaded "
+                                            + (int)progress + "%");
+                        }
+                    });
         }
     }
 
@@ -330,7 +347,7 @@ public class EditProfile extends AppCompatActivity {
         SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
 
         //TODO can optimize the uploading the algorithm
-        String filename = "gs://zuccstragram.appspot.com/Images/User_Profile/" + currentProfilePictureID;
+        String filename = "gs://zuccstragram.appspot.com/Images/User_Profile/" + KEY_ProfileImage;
         StorageReference gsReference = storage.getReferenceFromUrl(filename);
         gsReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -347,7 +364,44 @@ public class EditProfile extends AppCompatActivity {
         });
     }
 
+    public boolean confirmationCheckUp(){
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
+        if (editText_FirstName.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_FirstName), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(editText_LastName.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_LastName), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(editText_UserName.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_Username), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(editText_Bio.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_Bio), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(editText_Password.getText().toString().isEmpty() || editText_Password.getText().toString().length() < 8 || editText_Password.getText().toString().contentEquals(SPH.getPassword())){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_Password), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else  if(!editText_Password.getText().toString().contentEquals(editText_Confirmation_Password.getText().toString()) || editText_Confirmation_Password.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_ConfirmationPassword), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(editText_SecurityQuestion.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_SecurityQuestion), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(editText_SecurityQuestionAnswer.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_SecurityQuestionAnswer), Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
+
+        return  true;
+    }
 
 
 

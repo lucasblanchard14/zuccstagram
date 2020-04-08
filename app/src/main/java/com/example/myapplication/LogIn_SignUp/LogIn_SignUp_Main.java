@@ -10,11 +10,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -23,11 +28,17 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
     EditText editText_Password;
     Button signUpButton;
     Button logInButton;
+    TextView forgotPassword;
+    private FirebaseAuth mAuth;
+    FirebaseUser user;
+    private static final String TAG = "SignUp";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in__sign_up__main);
+        mAuth = FirebaseAuth.getInstance();
 
         toolbarSetUp();
         setUpUI();
@@ -39,51 +50,55 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
             }
         });
         logInButton.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View v) {
-                //TODO create an intent function to go to timeline
                 ValidateLogIn();
-
-                //goToTimeLine();
             }
         });
-
-
-
-
+        forgotPassword.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                goToForgotPassword();
+            }
+        });
     }
 
 
 
     void ValidateLogIn(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("Users")
-                .whereEqualTo("Email", editText_Email.getText().toString())
-                .whereEqualTo("Password", editText_Password.getText().toString())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        mAuth.signInWithEmailAndPassword(editText_Email.getText().toString(), editText_Password.getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // User found
-                            if(task.getResult().size() > 0){
+                            // Sign in success, update UI with the signed-in user's information
+
+
+                            if(mAuth.getCurrentUser().isEmailVerified()){
+                                Log.d(TAG, "signInWithEmail:success");
                                 SharedPreferenceHelper SPH = new SharedPreferenceHelper(getApplicationContext());
                                 SPH.saveProfileSettings_Login(editText_Email.getText().toString(), editText_Password.getText().toString());
                                 SPH.fetchProfile();
                                 Log.d("MainActivity", "Login Successful.");
-								// THIS IS WHEN WE JUMP TO
+                                // THIS IS WHEN WE JUMP TO
                                 goToTimeLine();
                             }
-                            // User not found
                             else{
-                                Log.d("MainActivity", "Login Failed.");
+                                Toast.makeText(LogIn_SignUp_Main.this, "This account is still pending",
+                                        Toast.LENGTH_SHORT).show();
                             }
+
                         } else {
-                            Log.d("MainActivity", "Login Failed.");
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(LogIn_SignUp_Main.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+
+                            // ...
                         }
+
+                        // ...
                     }
                 });
     }
@@ -102,18 +117,24 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
         editText_Email = findViewById(R.id.editText_Email);
         editText_Password = findViewById(R.id.editText_Password);
         signUpButton = findViewById(R.id.signUpButton);
+        forgotPassword = findViewById(R.id.textView_Forgot_Password);
         logInButton = findViewById(R.id.logInButton);
 
     }
-    protected void goToSignUp_P1()
+    public void goToTimeLine()
+    {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+    public void goToSignUp_P1()
     {
         Intent intent = new Intent(this, SignUp_P1.class);
         startActivity(intent);
     }
 
-    protected void goToTimeLine()
+    public void goToForgotPassword()
     {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ResetPasswordActivity.class);
         startActivity(intent);
     }
 
