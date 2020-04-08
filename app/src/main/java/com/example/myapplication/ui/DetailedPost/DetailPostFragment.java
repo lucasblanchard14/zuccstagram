@@ -1,8 +1,10 @@
-package com.example.myapplication;
+package com.example.myapplication.ui.DetailedPost;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -56,11 +59,38 @@ public class DetailPostFragment extends AppCompatActivity implements CommentDial
 
     TableLayout tableLayout;
 
+    private String user;
+    private String postId;
+    private byte[] image;
+    private String desc;
+
     private static final String TAG = "DetailPostFragment";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_detailpost);
+
+        // Fetch data from PostFragment
+        user = getIntent().getStringExtra("USER");
+        TextView tv1 = findViewById(R.id.textView);
+        tv1.setText(user);
+
+        /// TODO: Add timestamp to db
+        //timestamp = getIntent().getStringExtra("TIMESTAMP");
+        //TextView tv2 = findViewById(R.id.textView5);
+        //tv2.setText(timestamp);
+
+        postId = getIntent().getStringExtra("POST_ID");
+
+        image = getIntent().getByteArrayExtra("IMAGE");
+        Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
+        ImageView iv = findViewById(R.id.imageView19);
+        iv.setImageBitmap(bmp);
+
+        // TODO: Add textview for description
+        desc = getIntent().getStringExtra("DESC");
+        //TextView tv3 = findViewById(R.id.textView);
+        //tv3.setText(desc);
 
         tableLayout = findViewById(R.id.comment_list);
         emptycomments = findViewById(R.id.empty_comments);
@@ -78,7 +108,7 @@ public class DetailPostFragment extends AppCompatActivity implements CommentDial
     public void fetchComments(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Comments")
-                .whereEqualTo("Post", "TestPostID")
+                .whereEqualTo("Post", postId)
 	            .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -98,7 +128,7 @@ public class DetailPostFragment extends AppCompatActivity implements CommentDial
     }
 
     public void showCommentDialog(){
-        CommentDialog dialog = new CommentDialog();
+        CommentDialog dialog = new CommentDialog(postId);
         dialog.show(getSupportFragmentManager(), "test");
     }
 

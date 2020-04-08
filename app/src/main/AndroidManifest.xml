@@ -20,11 +20,20 @@
         <activity android:name=".LogIn_SignUp.ResetPasswordActivity"></activity>
         <activity android:name=".ui.PostMaker" />
         <activity
+            android:name=".ui.DetailedPost.DetailPostFragment"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".ui.Settings.Setting"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ui.Settings.EditProfile"
             android:parentActivityName=".ui.Settings.Setting" />
+        <activity
+            android:name=".ui.Search.SearchFragment"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ui.Following.FollowingActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ui.Settings.AdvanceSettingsActivity"
             android:label="@string/title_activity_settings"

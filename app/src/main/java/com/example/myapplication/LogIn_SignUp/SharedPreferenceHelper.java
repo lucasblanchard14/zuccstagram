@@ -1,13 +1,16 @@
 package com.example.myapplication.LogIn_SignUp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,14 +25,17 @@ import com.google.firebase.storage.StorageReference;
 public class SharedPreferenceHelper {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private SharedPreferences sharedPreferences_Profile;
+    private SharedPreferences sharedPreferences_Profile;        // This is the current user's data
+    private SharedPreferences sharedPreferences_Other;         // This is the data of the account you're visiting
     private Profile profile;
     private static final String TAG = "__SPH";
 
+    private Context context;
+
     public SharedPreferenceHelper(Context context) {
         sharedPreferences_Profile = context.getSharedPreferences(context.getString(R.string.sharedPreferences_Profile), Context.MODE_PRIVATE);
-
-
+        sharedPreferences_Other = context.getSharedPreferences(context.getString(R.string.sharedPreferences_Other), Context.MODE_PRIVATE);
+        this.context = context;
     }
 
 
@@ -40,8 +46,6 @@ public class SharedPreferenceHelper {
         editor.commit();
 
     }
-
-
 
     public void saveProfileSettings_P1(String FirstName, String LastName, String Email, String ConfirmationEmail) {
         SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
@@ -86,7 +90,6 @@ public class SharedPreferenceHelper {
     }
 
     public void fetchProfile(){
-
         db.collection("Users").document(getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -103,6 +106,7 @@ public class SharedPreferenceHelper {
                         editor.putString("ImageCount", document.get("ImageCount").toString());
                         editor.commit();
 
+
                     }
                     else{
                         Log.d(TAG, "No documents: ");
@@ -115,7 +119,21 @@ public class SharedPreferenceHelper {
 
     }
 
+    public void fetchProfile(String[] data){
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        editor.putString("editText_FirstName", data[0]);
+        editor.putString("editText_LastName", data[1]);
+        editor.putString("editText_Bio", data[2]);
+        editor.putString("editText_Password", data[3]);
+        editor.putString("editText_SecurityQuestion", data[4]);
+        editor.putString("editText_SecurityQuestionAnswer", data[5]);
+        editor.putString("editText_UserName", data[6]);
+        editor.putString("ImageCount", data[7]);
+        editor.commit();
 
+        switchToProfile();
+
+    }
 
     //Get function P1
 
@@ -200,4 +218,61 @@ public class SharedPreferenceHelper {
     public void setProfile(Profile profile) {
         this.profile = profile;
     }
+
+    // SECTION FOR FETCHING AND STORING OTHER USER'S INFORMATION
+    public boolean isOnYourProfile(){
+        return sharedPreferences_Profile.getBoolean("On_Your_Profile", true);
+    }
+
+    public void switchToProfile(){
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        editor.putBoolean("On_Your_Profile", true);
+        editor.commit();
+    }
+
+    public void switchToOther(){
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        editor.putBoolean("On_Your_Profile", false);
+        editor.commit();
+    }
+
+    public boolean isLastAccountVisited(){
+        return sharedPreferences_Profile.getBoolean("Last_Account_Visited", false);
+    }
+
+    public void setNewLastAccountVisited(){
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        boolean last = sharedPreferences_Profile.getBoolean("On_Your_Profile", false);
+        editor.putBoolean("Last_Account_Visited", last);
+        editor.commit();
+    }
+
+    public void fetchOthersProfile(String[] data){
+        SharedPreferences.Editor editor = sharedPreferences_Other.edit();
+        editor.putString("editText_FirstName", data[0]);
+        editor.putString("editText_LastName", data[1]);
+        editor.putString("editText_Bio", data[2]);
+        editor.putString("editText_UserName", data[3]);
+        editor.putString("currentProfilePictureID", data[4]);
+        editor.putString("editText_Email", data[5]);
+        editor.commit();
+        switchToOther();
+    }
+
+    public String getOtherUserName() {
+        return sharedPreferences_Other.getString("editText_UserName", null);
+    }
+
+    public String getOtherBio() {
+        return sharedPreferences_Other.getString("editText_Bio", null);
+    }
+
+    public String getOtherEmail() {
+        return sharedPreferences_Other.getString("editText_Email", null);
+    }
+
+    public String getOtherProfilePictureID() {
+        return sharedPreferences_Other.getString("currentProfilePictureID", null);
+    }
 }
+
