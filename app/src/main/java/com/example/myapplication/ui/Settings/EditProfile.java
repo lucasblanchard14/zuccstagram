@@ -27,6 +27,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -74,11 +76,11 @@ public class EditProfile extends AppCompatActivity {
     private static final String KEY_Security_Q = "Security_Q";
     private static final String KEY_Security_QA = "Security_QA";
     private static final String KEY_Username = "Username";
-    private static final String KEY_Email = "Image";
-    private static final String KEY_ProfileImage = "Image";
+    private static final String KEY_Email = "Email";
+    private static final String KEY_ProfileImage = "Profile_Picture";
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     //private String tempProfilePictureID = UUID.randomUUID().toString();
-    private String currentProfilePictureID;
+
 
 
 
@@ -142,8 +144,19 @@ public class EditProfile extends AppCompatActivity {
         noteRef.update(KEY_Username, editText_UserName.getText().toString());
         noteRef.update(KEY_Security_Q, editText_SecurityQuestion.getText().toString());
         noteRef.update(KEY_Security_QA, editText_SecurityQuestionAnswer.getText().toString());
-        noteRef.update(KEY_ProfileImage, currentProfilePictureID);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String newPassword = editText_Password.getText().toString();
+
+        user.updatePassword(newPassword)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User password updated.");
+                        }
+                    }
+                });
 
 
     }
@@ -166,7 +179,7 @@ public class EditProfile extends AppCompatActivity {
 
                         // Get image location
 
-                        String filename = "gs://zuccstragram.appspot.com/Images/" + document.get(KEY_Email).toString() + "/" + document.get(KEY_ProfileImage).toString();
+                        String filename = "gs://zuccstragram.appspot.com/Images/" + document.get(KEY_Email).toString() + "/" + KEY_ProfileImage;
                         StorageReference gsReference = storage.getReferenceFromUrl(filename);
 
 
@@ -185,15 +198,16 @@ public class EditProfile extends AppCompatActivity {
                         });
 
 
+                        SharedPreferenceHelper SPH = new SharedPreferenceHelper(getApplicationContext());
 
                         editText_FirstName.setText(document.get("First_Name").toString());
                         editText_LastName.setText(document.get("Last_Name").toString());
                         editText_Bio.setText(document.get("Bio").toString());
-                        editText_Password.setText(document.get("Password").toString());
+                        editText_Password.setText(SPH.getPassword());
                         editText_SecurityQuestion.setText(document.get("Security_Q").toString());
                         editText_SecurityQuestionAnswer.setText(document.get("Security_QA").toString());
                         editText_UserName.setText(document.get("Username").toString());
-                        currentProfilePictureID = document.get("Image").toString();
+
 
                     }
                     else{
@@ -279,7 +293,7 @@ public class EditProfile extends AppCompatActivity {
             // Defining the child of storageReference
 
 
-            String filename = "gs://zuccstragram.appspot.com/Images/" + SPH.getEmail()+ "/" + currentProfilePictureID;
+            String filename = "gs://zuccstragram.appspot.com/Images/" + SPH.getEmail()+ "/" + KEY_ProfileImage;
             StorageReference gsReference = storage.getReferenceFromUrl(filename);
 
 
@@ -333,7 +347,7 @@ public class EditProfile extends AppCompatActivity {
         SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
 
         //TODO can optimize the uploading the algorithm
-        String filename = "gs://zuccstragram.appspot.com/Images/User_Profile/" + currentProfilePictureID;
+        String filename = "gs://zuccstragram.appspot.com/Images/User_Profile/" + KEY_ProfileImage;
         StorageReference gsReference = storage.getReferenceFromUrl(filename);
         gsReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

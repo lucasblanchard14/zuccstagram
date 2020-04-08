@@ -20,6 +20,7 @@ import com.example.myapplication.LogIn_SignUp.LogIn_SignUp_Main;
 import com.example.myapplication.ui.Search.SearchFragment;
 import com.example.myapplication.ui.Settings.Setting;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.navigation_home:
                 //TODO
+                FirebaseAuth.getInstance().signOut();
                 goToLogInSignUp();
                 return true;
 

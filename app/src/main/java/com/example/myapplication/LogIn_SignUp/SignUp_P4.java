@@ -20,8 +20,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -48,6 +53,9 @@ public class SignUp_P4 extends AppCompatActivity {
     Uri imageUri;
     private StorageReference mStorageRef;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private FirebaseAuth mAuth;
+    FirebaseUser user;
+    private  static final String TAG = "Verification email";
 
 
 
@@ -73,6 +81,9 @@ public class SignUp_P4 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 confirmationCheckUp();
+                generateProfile();
+                uploadImage();
+                goToLogInPage();
             }
         });
 
@@ -93,27 +104,39 @@ public class SignUp_P4 extends AppCompatActivity {
         profileImage = findViewById(R.id.profile_image_P4);
         uploadButton = findViewById(R.id.uploadButton_P4);
         finishButton = findViewById(R.id.finishButton_P4);
+        mAuth = FirebaseAuth.getInstance();
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mAuth.getCurrentUser() != null){
+            //handle the already login user
+            Log.d(TAG, "A User is already logged in issues in P4");
+            FirebaseAuth.getInstance().signOut();
+        }
+    }
+
+
     protected void generateProfile(){
-
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
         Map<String, Object> docData = new HashMap<>();
-        docData.put("First_Name", profile.getFirstName());
-        docData.put("Last_Name", profile.getLastName());
-        docData.put("Email", profile.getEmail());
+        docData.put("First_Name", SPH.getFirstName());
+        docData.put("Last_Name", SPH.getLastName());
+        docData.put("Email", SPH.getEmail());
 
-        docData.put("Username", profile.getUserName());
-        docData.put("Bio", profile.getBio());
-        docData.put("Password", profile.getPassword());
+        docData.put("Username", SPH.getUserName());
+        docData.put("Bio", SPH.getBio());
+        docData.put("Password", SPH.getPassword());
 
-        docData.put("Security_Q", profile.getSecurityQuestion());
-        docData.put("Security_QA", profile.getSecurityQuestionAnswer());
+        docData.put("Security_Q", SPH.getSecurityQuestion());
+        docData.put("Security_QA", SPH.getSecurityQuestionAnswer());
         docData.put("ImageCount", "0");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("Users").document(profile.getEmail())
+        db.collection("Users").document(SPH.getEmail())
                 .set(docData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -134,11 +157,35 @@ public class SignUp_P4 extends AppCompatActivity {
                         // ERROR HANDLER
                     }
                 });
+
+        //Create Firebase Authentication
+        mAuth.createUserWithEmailAndPassword(SPH.getEmail(), SPH.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    /* we can store the additional fields */
+                    mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(SignUp_P4.this, "Registered successfully. Please check your email for verification",Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(SignUp_P4.this, task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
 
 
-    void goToTimeLine(){
+    void goToLogInPage(){
+        FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, LogIn_SignUp_Main.class);
         startActivity(intent);
     }
@@ -238,10 +285,7 @@ public class SignUp_P4 extends AppCompatActivity {
     }
 
 
-    public  void updateProfile(){
-        SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
-        SPH.fetchProfile();
-    }
+
 
     public void confirmationCheckUp(){
         if(profileImage.getDrawable() == null){
@@ -253,8 +297,7 @@ public class SignUp_P4 extends AppCompatActivity {
                             //Yes button clicked
                             generateProfile();
                             uploadImage();
-                            updateProfile();
-                            goToTimeLine();
+                            goToLogInPage();
                             break;
 
                         case DialogInterface.BUTTON_NEGATIVE:

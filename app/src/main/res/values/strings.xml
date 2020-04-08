@@ -20,6 +20,12 @@
 
     <string name="textView_title_Zuccstagram">Zuccstagram</string>
 
+    //Reset Password
+    <string name="textView_ResetPassword">A resetting email will be sent to the \nemail address provide.</string>
+    <string name="textView_Hint_ResetPassword">example@gmail.com</string>
+    <string name="textView_Email_ResetPassword">Email: </string>
+    <string name="Button_Email_ResetPassword">Send Email</string>
+    <string name="textView_ForgotPassword">Forgot Password</string>
 
     //Sign Up Page P1
 
@@ -174,7 +180,6 @@
     <string name="saveButton_EP">SAVE</string>
 
 
-
     // confirmation Check Up
     <string name="wrong_FirstName">Invalid First Name</string>
     <string name="wrong_LastName">Invalid Last Name</string>
@@ -187,8 +192,6 @@
     <string name="wrong_Bio">Invalid Bio</string>
     <string name="wrong_SecurityQuestion">Invalid Security Question</string>
     <string name="wrong_SecurityQuestionAnswer">Invalid Security Answer</string>
-
-
 
 
 </resources>

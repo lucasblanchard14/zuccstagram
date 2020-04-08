@@ -90,11 +90,9 @@ public class SharedPreferenceHelper {
                         editor.putString("editText_FirstName", document.get("First_Name").toString());
                         editor.putString("editText_LastName", document.get("Last_Name").toString());
                         editor.putString("editText_Bio", document.get("Bio").toString());
-                        editor.putString("editText_Password", document.get("Password").toString());
                         editor.putString("editText_SecurityQuestion", document.get("Security_Q").toString());
                         editor.putString("editText_SecurityQuestionAnswer", document.get("Security_QA").toString());
                         editor.putString("editText_UserName", document.get("Username").toString());
-                        editor.putString("currentProfilePictureID", document.get("Image").toString());
                         editor.putString("ImageCount", document.get("ImageCount").toString());
                         editor.commit();
 

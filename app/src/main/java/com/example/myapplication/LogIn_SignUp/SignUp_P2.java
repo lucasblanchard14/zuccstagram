@@ -108,7 +108,7 @@ public class SignUp_P2 extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), getString(R.string.wrong_Bio), Toast.LENGTH_SHORT).show();
             return false;
         }
-        else if(editText_Password.getText().toString().isEmpty() || editText_Password.getText().toString().length() < 8 || editText_Password.getText().toString().contentEquals(SPH.getPassword())){
+        else if(editText_Password.getText().toString().isEmpty() || editText_Password.getText().toString().length() < 8 ){
             Toast.makeText(getApplicationContext(), getString(R.string.wrong_Password), Toast.LENGTH_SHORT).show();
             return false;
         }
