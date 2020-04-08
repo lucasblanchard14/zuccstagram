@@ -78,6 +78,13 @@ public class SharedPreferenceHelper {
 
     }
 
+    public void testVerification(boolean Email) {
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        editor.putString("testVerfication", String.valueOf(Email));
+        editor.commit();
+
+    }
+
     public void fetchProfile(){
 
         db.collection("Users").document(getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -160,6 +167,10 @@ public class SharedPreferenceHelper {
 
     public String getEmailVerification() {
         return sharedPreferences_Profile.getString("emailVerification", null);
+    }
+
+    public String getTestVerification() {
+        return sharedPreferences_Profile.getString("testVerfication", null);
     }
 
     public String getImageCount() {
