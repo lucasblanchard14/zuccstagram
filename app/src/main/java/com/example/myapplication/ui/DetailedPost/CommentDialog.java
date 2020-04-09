@@ -24,6 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CommentDialog extends AppCompatDialogFragment {
 
@@ -31,6 +33,7 @@ public class CommentDialog extends AppCompatDialogFragment {
     private EditText d_comment;
     private CommentDialogListener listener;
     private String id;
+    private boolean empty_comment;
 
     public CommentDialog (String post){
         id = post;
@@ -45,7 +48,7 @@ public class CommentDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.comment_dialog, null);
 
         builder.setView(view)
-                .setTitle("Comment Here")
+                .setTitle("Leave a Comment")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -57,8 +60,13 @@ public class CommentDialog extends AppCompatDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         String username = d_username.getText().toString();
                         String comment = d_comment.getText().toString();
-                        uploadComment(username, comment);
-                        listener.applyTexts(username,comment);
+
+                        empty_comment = isCommentEmpty(comment);
+
+                        if(!empty_comment){
+                            uploadComment(username, comment);
+                            listener.applyTexts(username,comment);
+                        }
                     }
                 });
 
@@ -112,5 +120,12 @@ public class CommentDialog extends AppCompatDialogFragment {
                         // ERROR HANDLER
                     }
                 });
+    }
+
+    public boolean isCommentEmpty(String c){
+        Pattern pattern = Pattern.compile("^\\s*"); //matches any whitespace, in other words empty comments
+        Matcher matcher = pattern.matcher(c); //checks to see if comment is empty
+        boolean is_valid = matcher.matches(); //places result in boolean var
+        return is_valid;
     }
 }
