@@ -60,6 +60,7 @@ public class DetailPostFragment extends AppCompatActivity implements CommentDial
     TableLayout tableLayout;
 
     private String user;
+    private String timestamp;
     private String postId;
     private byte[] image;
     private String desc;
@@ -76,9 +77,9 @@ public class DetailPostFragment extends AppCompatActivity implements CommentDial
         tv1.setText(user);
 
         /// TODO: Add timestamp to db
-        //timestamp = getIntent().getStringExtra("TIMESTAMP");
-        //TextView tv2 = findViewById(R.id.textView5);
-        //tv2.setText(timestamp);
+        timestamp = getIntent().getStringExtra("TIMESTAMP");
+        TextView tv2 = findViewById(R.id.textView5);
+        tv2.setText(timestamp);
 
         postId = getIntent().getStringExtra("POST_ID");
 

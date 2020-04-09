@@ -26,10 +26,15 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.myapplication.LogIn_SignUp.SharedPreferenceHelper;
 import com.example.myapplication.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -59,6 +64,7 @@ public class UploadFragment extends Fragment {
     StorageReference storageReference;
     String currentPhotoPath;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private String TAG = "UploadFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -181,10 +187,12 @@ public class UploadFragment extends Fragment {
     void uploadPost() {
         SharedPreferenceHelper SPH = new SharedPreferenceHelper(getActivity().getApplicationContext());
         SPH.fetchProfile();
+        final Timestamp ts = new Timestamp(new Date());
         Map<String, Object> docData = new HashMap<>();
         docData.put("Description", descriptionFinal);
         docData.put("ImageID", SPH.getImageCount());
         docData.put("User", SPH.getEmail());
+        docData.put("Timestamp", ts);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -196,6 +204,10 @@ public class UploadFragment extends Fragment {
                         // SUCCESS
                         // uhh do something here like return to main page
                         Log.d("PostMaker", "Post Created.");
+
+                        // Send Notifications to Followers about the new post
+                        SendNotifications(ts);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -238,5 +250,47 @@ public class UploadFragment extends Fragment {
                         // ...
                     }
                 });
+    }
+
+    private void SendNotifications(final Timestamp ts){
+        SharedPreferenceHelper SPH1 = new SharedPreferenceHelper(getActivity());
+        // Check all your followers
+        db.collection("Following")
+                .whereEqualTo("User", SPH1.getEmail())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                SharedPreferenceHelper SPH2 = new SharedPreferenceHelper(getActivity());
+                                Map<String, Object> notice = new HashMap<>();
+                                notice.put("SenderName", SPH2.getUserName());
+                                notice.put("Sender", SPH2.getEmail());
+                                notice.put("Receiver", document.get("Following"));
+                                notice.put("Message", "New Post");
+                                notice.put("Timestamp", ts);
+
+                                db.collection("Notifications").document(SPH2.getEmail()+"|"+SPH2.getOtherEmail()+"|"+ts.getSeconds())
+                                        .set(notice)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error writing document", e);
+                                            }
+                                        });
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
     }
 }

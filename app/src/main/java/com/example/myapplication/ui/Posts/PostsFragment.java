@@ -33,7 +33,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class PostsFragment extends Fragment {
 
@@ -73,6 +75,7 @@ public class PostsFragment extends Fragment {
         }
 
         db.collection("Posts")
+                //.orderBy("Timestamp", Query.Direction.DESCENDING)
                 .orderBy("ImageID", Query.Direction.DESCENDING)
                 .whereEqualTo("User", email)
                 .get()
@@ -122,7 +125,9 @@ public class PostsFragment extends Fragment {
                                         iv.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                openPost(username, document.getId(), bytes, document.get("Description").toString());
+                                                Timestamp ts = (Timestamp) document.get("Timestamp");
+                                                Date date = ts.toDate();
+                                                openPost(username, document.getId(), bytes, document.get("Description").toString(), getDateTimeFromTimeStamp(ts.getSeconds(), "dd/MM/yy h:mm a"));
                                             }
                                         });
                                     }
@@ -156,12 +161,20 @@ public class PostsFragment extends Fragment {
                 });
     }
 
-    public void openPost(String user, String postID, byte[] image, String desc){
+    public static String getDateTimeFromTimeStamp(Long time, String mDateFormat) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(mDateFormat);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date dateTime = new Date(time);
+        return dateFormat.format(dateTime);
+    }
+
+    public void openPost(String user, String postID, byte[] image, String desc, String time){
         Intent intent = new Intent(getActivity(), DetailPostFragment.class);
         intent.putExtra("USER", user);
         intent.putExtra("POST_ID", postID);
         intent.putExtra("IMAGE", image);
         intent.putExtra("DESC", desc);
+        intent.putExtra("TIMESTAMP", time);
         startActivity(intent);
     }
 }
