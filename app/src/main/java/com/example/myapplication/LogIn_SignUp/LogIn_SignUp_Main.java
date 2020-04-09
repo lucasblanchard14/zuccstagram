@@ -188,6 +188,29 @@ public class LogIn_SignUp_Main extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed(){
+
+
+    }
+
+
+
+
+
+  //________________________________________________________________________________________________________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
     /* TEST FUNCTIONS*/
 
     public boolean validateTestInput(String  s){
