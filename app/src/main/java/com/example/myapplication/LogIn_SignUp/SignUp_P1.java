@@ -1,15 +1,23 @@
 package com.example.myapplication.LogIn_SignUp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignUp_P1 extends AppCompatActivity {
 
@@ -19,6 +27,7 @@ public class SignUp_P1 extends AppCompatActivity {
     EditText editText_Email;
     EditText editText_Confirmation_Email;
     Button nextButton;
+    private static final String TAG = "SP1";
 
 
 
@@ -37,8 +46,10 @@ public class SignUp_P1 extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                saveP1();
-                goToSignUp_P2();
+                if(confirmationCheckUp()){
+                    saveP1();
+                    goToSignUp_P2();
+                }
             }
         });
 
@@ -98,8 +109,58 @@ public class SignUp_P1 extends AppCompatActivity {
 
     }
 
+    public boolean emailVerification(){
+        final boolean[] result = new boolean[1];
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        DocumentReference docIdRef = rootRef.collection("Users").document(editText_Email.getText().toString());
+        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    SharedPreferenceHelper SPH = new SharedPreferenceHelper(getApplicationContext());
+                    if (document.exists()) {
+                        SPH.emailVerification(true);
+                        Log.d(TAG, "Document exists!    " + true);
+                    } else {
+                        Log.d(TAG, "Document does not exist!");
+                        SPH.emailVerification(false);
+                        result[0] = false;
+                    }
+                } else {
+                    Log.d(TAG, "Failed with: ", task.getException());
+                }
+            }
+        });
 
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(getApplicationContext());
+        return Boolean.parseBoolean(SPH.getEmailVerification());
+    }
 
+    public boolean confirmationCheckUp(){
+        SharedPreferenceHelper SPH = new SharedPreferenceHelper(this);
+        if (editText_FirstName.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_FirstName), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(editText_LastName.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_LastName), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(editText_Email.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(), getString(R.string.invalid_Email), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(emailVerification()){
+            Toast.makeText(getApplicationContext(), getString(R.string.used_Email), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(!editText_Confirmation_Email.getText().toString().contentEquals(editText_Email.getText().toString())){
+            Toast.makeText(getApplicationContext(), getString(R.string.wrong_ConfirmationEmail), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return  true;
+    }
 
 
 

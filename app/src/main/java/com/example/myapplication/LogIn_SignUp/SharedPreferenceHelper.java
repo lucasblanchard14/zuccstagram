@@ -75,8 +75,17 @@ public class SharedPreferenceHelper {
 
     }
 
-    public void saveProfileSettings_P4(String FullName, String Age, String StudentID) {
-        //TODO find a way to save a picture, temporarily
+    public void emailVerification(boolean Email) {
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        editor.putString("emailVerification", String.valueOf(Email));
+        editor.commit();
+
+    }
+
+    public void testVerification(boolean Email) {
+        SharedPreferences.Editor editor = sharedPreferences_Profile.edit();
+        editor.putString("testVerfication", String.valueOf(Email));
+        editor.commit();
 
     }
 
@@ -91,11 +100,9 @@ public class SharedPreferenceHelper {
                         editor.putString("editText_FirstName", document.get("First_Name").toString());
                         editor.putString("editText_LastName", document.get("Last_Name").toString());
                         editor.putString("editText_Bio", document.get("Bio").toString());
-                        editor.putString("editText_Password", document.get("Password").toString());
                         editor.putString("editText_SecurityQuestion", document.get("Security_Q").toString());
                         editor.putString("editText_SecurityQuestionAnswer", document.get("Security_QA").toString());
                         editor.putString("editText_UserName", document.get("Username").toString());
-                        editor.putString("currentProfilePictureID", document.get("Image").toString());
                         editor.putString("ImageCount", document.get("ImageCount").toString());
                         editor.commit();
 
@@ -121,8 +128,7 @@ public class SharedPreferenceHelper {
         editor.putString("editText_SecurityQuestion", data[4]);
         editor.putString("editText_SecurityQuestionAnswer", data[5]);
         editor.putString("editText_UserName", data[6]);
-        editor.putString("currentProfilePictureID", data[7]);
-        editor.putString("ImageCount", data[8]);
+        editor.putString("ImageCount", data[7]);
         editor.commit();
 
         switchToProfile();
@@ -177,6 +183,13 @@ public class SharedPreferenceHelper {
         return sharedPreferences_Profile.getString("editText_ConfirmationPassword", null);
     }
 
+    public String getEmailVerification() {
+        return sharedPreferences_Profile.getString("emailVerification", null);
+    }
+
+    public String getTestVerification() {
+        return sharedPreferences_Profile.getString("testVerfication", null);
+    }
 
     public String getImageCount() {
         return sharedPreferences_Profile.getString("ImageCount", null);
@@ -205,9 +218,6 @@ public class SharedPreferenceHelper {
     public void setProfile(Profile profile) {
         this.profile = profile;
     }
-
-
-
 
     // SECTION FOR FETCHING AND STORING OTHER USER'S INFORMATION
     public boolean isOnYourProfile(){
@@ -265,3 +275,4 @@ public class SharedPreferenceHelper {
         return sharedPreferences_Other.getString("currentProfilePictureID", null);
     }
 }
+
