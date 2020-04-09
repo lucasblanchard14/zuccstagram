@@ -83,17 +83,17 @@ public class ProfileFragment extends Fragment {
     public void loadProfile(){
         // Is this our profile page?
         if(SPH.isOnYourProfile()){
-            buildProfile(SPH.getUserName(), SPH.getCurrentProfilePictureID());
+            buildProfile(SPH.getUserName(), SPH.getEmail());
             fb.setVisibility(View.GONE); // Don't show follow button if this is your own page
         }
         else{
 
-            buildProfile(SPH.getOtherUserName(), SPH.getOtherProfilePictureID());
+            buildProfile(SPH.getOtherUserName(), SPH.getOtherEmail());
             fb.setVisibility(View.VISIBLE);
         }
     }
 
-    public void buildProfile(String user, String img){
+    public void buildProfile(String user, String email){
         // Username
         username.setText(user);
 
@@ -104,7 +104,7 @@ public class ProfileFragment extends Fragment {
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
         // Get image location
-        String filename = "gs://zuccstragram.appspot.com/Images/User_Profile/" + img;
+        String filename = "gs://zuccstragram.appspot.com/Images/"+email+"/Profile_Picture.jpg";
         StorageReference gsReference = storage.getReferenceFromUrl(filename);
 
 
@@ -122,7 +122,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        //gs://zuccstragram.appspot.com/Images/User_Profile/test_pfp.png
 
         if(!SPH.isOnYourProfile())
             CheckIfFollowed();
