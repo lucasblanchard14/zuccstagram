@@ -104,7 +104,7 @@ public class ProfileFragment extends Fragment {
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
         // Get image location
-        String filename = "gs://zuccstragram.appspot.com/Images/"+email+"/Profile_Picture.jpg";
+        String filename = "gs://zuccstragram.appspot.com/Images/"+email+"/Profile_Picture";
         StorageReference gsReference = storage.getReferenceFromUrl(filename);
 
 
